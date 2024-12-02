@@ -33,6 +33,25 @@ const result = roll(pool);
 // Access detailed results
 console.log(result.results);  // Array of individual die results
 console.log(result.summary);  // Summary of total successes, advantages, etc.
+
+=> [
+    { type: 'boost', roll: 3, result: [Object] },
+    { type: 'proficiency', roll: 9, result: [Object] },
+    { type: 'proficiency', roll: 5, result: [Object] },
+    { type: 'proficiency', roll: 5, result: [Object] },
+    { type: 'difficulty', roll: 4, result: [Object] },
+    { type: 'difficulty', roll: 4, result: [Object] },
+    { type: 'challenge', roll: 5, result: [Object] }
+  ]
+  {
+    successes: 4,
+    failures: 0,
+    advantages: 1,
+    threats: 2,
+    triumphs: 0,
+    despair: 0
+  }
+
 ```
 
 Each roll result includes:
@@ -41,3 +60,6 @@ Each roll result includes:
 - Individual results per die
 - Overall summary of the roll
 
+# Contribution
+
+This is a new library for a game with not a lot of open source tooling available - feedback and pull requests welcome!
