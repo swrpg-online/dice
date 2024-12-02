@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1732735622726" clover="3.2.0">
-  <project timestamp="1732735622726" name="All files">
+<coverage generated="1733155876718" clover="3.2.0">
+  <project timestamp="1733155876718" name="All files">
     <metrics statements="98" coveredstatements="92" conditionals="81" coveredconditionals="81" methods="20" coveredmethods="15" elements="199" coveredelements="188" complexity="0" loc="98" ncloc="98" packages="1" files="3" classes="3"/>
     <file name="dice.ts" path="/Users/joshuaziggas/swrpg-online/dice/src/dice.ts">
       <metrics statements="87" coveredstatements="87" conditionals="78" coveredconditionals="78" methods="11" coveredmethods="11"/>

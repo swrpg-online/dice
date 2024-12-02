@@ -1,6 +1,32 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm test
+# Check for an existing environment variable to prevent infinite loop
+if [ "$SKIP_HOOK" != "true" ]; then
+    export SKIP_HOOK=true
+    # Run tests
+    npm run test
 
+    # Check if coverage files have been modified
+    if ! git diff --quiet coverage/; then
+        # Set an environment variable to prevent re-triggering the hook
+        # export SKIP_HOOK=true
+        
+        # Stage coverage files
+        git add coverage/
+
+        # Commit the coverage files
+        git commit -m "Add latest coverage files" --allow-empty --no-verify
+
+        # Unset the environment variable
+        unset SKIP_HOOK
+    fi
+fi
+
+# Build the project
 npm run build
+
+# Check for changes in package.json
+if git diff --cached --name-only | grep package.json; then
+    npm version patch # Use 'minor'/'major' as needed
+fi
