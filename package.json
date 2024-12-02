@@ -7,7 +7,9 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "npx jest --verbose"
+    "test": "npx jest --verbose",
+    "build": "tsc",
+    "prepare": "npm run build && husky install"
   },
   "keywords": [],
   "author": "Chris Pan",
@@ -19,7 +21,9 @@
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "husky": "^8.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/swrpg-online/dice"
