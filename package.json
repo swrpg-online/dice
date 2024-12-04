@@ -3,13 +3,24 @@
   "version": "0.9.0",
   "description": "A TypeScript library for simulating Star Wars RPG narrative dice rolls.",
   "main": "dist/index.js",
+  "bin": {
+    "swrpg-dice": "dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./cli": "./dist/cli.js"
+  },
   "directories": {
     "test": "tests"
   },
+  "files": [
+    "dist/**",
+    "package.json"
+  ],
   "scripts": {
     "test": "npx jest --verbose",
     "ci:test": "tsc --noEmit && npx jest --verbose",
-    "build": "tsc && cp package.json dist/",
+    "build": "tsc",
     "prepare": "npm run build && husky install"
   },
   "keywords": [],

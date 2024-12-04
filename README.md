@@ -4,13 +4,15 @@
 ![build](https://github.com/swrpg-online/dice/actions/workflows/release.yml/badge.svg)
 [![codecov](https://codecov.io/gh/swrpg-online/dice/graph/badge.svg?token=BQIFNBWKI8)](https://codecov.io/gh/swrpg-online/dice)
 
-A TypeScript library that creates dice rolls for the Star Wars Role-Playing Game by [Fantasy Flight Games](https://www.fantasyflightgames.com/en/starwarsrpg/) and [Edge Studio](https://www.edge-studio.net/categories-games/starwarsrpg/).
+A TypeScript library that creates dice rolls using the [narrative dice system](https://star-wars-rpg-ffg.fandom.com/wiki/Narrative_Dice) for the Star Wars Role-Playing Game by [Fantasy Flight Games](https://www.fantasyflightgames.com/en/starwarsrpg/) and [Edge Studio](https://www.edge-studio.net/categories-games/starwarsrpg/).
 
 ## Installation
 
 ```bash
-npm install @swrpg-online/dice
+npm i @swrpg-online/dice
 ```
+
+or optionally to use as a CLI command you can install globally with `npm i -g @swrpg-online/dice`
 
 ## Features
 
@@ -18,10 +20,11 @@ npm install @swrpg-online/dice
 - Detailed roll breakdown for each die
 - Comprehensive test coverage
 - TypeScript type safety
+- roll from a CLI
 
 ## Usage
 
-Basic usage:
+via code:
 
 ```typescript
 import { roll, DicePool } from '@swrpg-online/dice';
@@ -119,6 +122,14 @@ Each roll result includes:
 - Die type identification
 - Individual results per die
 - Overall summary of the roll
+
+# Roadmap or Under Review
+
+- implement the Force die
+- implement ability to add success, failure, and so on to dice pools
+- ship combat?
+- crits?
+- polyhedral dice for convenience?
 
 # Contribution
 
