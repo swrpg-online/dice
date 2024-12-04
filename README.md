@@ -1,7 +1,8 @@
 # dice
 
-![npm version](https://img.shields.io/npm/v/my-package)
-![build](https://github.com/user/repo/actions/workflows/release.yml/badge.svg)
+![npm version](https://img.shields.io/npm/v/@swrpg-online/dice)
+![build](https://github.com/swrpg-online/dice/actions/workflows/release.yml/badge.svg)
+[![codecov](https://codecov.io/gh/swrpg-online/dice/graph/badge.svg?token=BQIFNBWKI8)](https://codecov.io/gh/swrpg-online/dice)
 
 A TypeScript library that creates dice rolls for the Star Wars Role-Playing Game by [Fantasy Flight Games](https://www.fantasyflightgames.com/en/starwarsrpg/) and [Edge Studio](https://www.edge-studio.net/categories-games/starwarsrpg/).
 
