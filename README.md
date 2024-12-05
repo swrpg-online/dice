@@ -130,6 +130,7 @@ Each roll result includes:
 - ship combat?
 - crits?
 - polyhedral dice for convenience?
+- anything else?
 
 # Contribution
 
