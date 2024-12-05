@@ -3,6 +3,7 @@
 ![npm version](https://img.shields.io/npm/v/@swrpg-online/dice)
 ![build](https://github.com/swrpg-online/dice/actions/workflows/release.yml/badge.svg)
 [![codecov](https://codecov.io/gh/swrpg-online/dice/graph/badge.svg?token=BQIFNBWKI8)](https://codecov.io/gh/swrpg-online/dice)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 
 A TypeScript library that creates dice rolls using the [narrative dice system](https://star-wars-rpg-ffg.fandom.com/wiki/Narrative_Dice) for the Star Wars Role-Playing Game by [Fantasy Flight Games](https://www.fantasyflightgames.com/en/starwarsrpg/) and [Edge Studio](https://www.edge-studio.net/categories-games/starwarsrpg/).
 
