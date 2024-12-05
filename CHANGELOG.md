@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/swrpg-online/dice/compare/v1.0.0...v1.0.1) (2024-12-05)
+
+### Bug Fixes
+
+- add shebang to the top of cli ([eb4d811](https://github.com/swrpg-online/dice/commit/eb4d811f70be79f6df7ffc440e866f42fe9ae3ce))
+
 # 1.0.0 (2024-12-05)
 
 ### Bug Fixes
