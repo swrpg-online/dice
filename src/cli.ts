@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { roll } from "./dice";
 import { DicePool } from "./types";
 // import * as path from 'path';
