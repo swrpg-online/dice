@@ -57,10 +57,10 @@ export function parseDiceNotation(input: string): DicePool {
         break;
       // b/boo = Blue/Boost
       case "b":
-        pool.setBackDice = count;
+        pool.boostDice = count;
         break;
       case "boo":
-        pool.setBackDice = count;
+        pool.boostDice = count;
         break;
       // r/c = Red/ Challenge
       case "r":
@@ -115,7 +115,7 @@ export function formatResult(result: any): string {
   return parts.join(", ") || "No effects";
 }
 
-const main = () => {
+export const main = () => {
   const input = process.argv.slice(2).join(" ");
   if (!input) {
     console.log(`Usage: > swrpg-dice 2y 1g 2p 1r
