@@ -4,7 +4,7 @@ import { roll } from "./dice";
 import { DicePool } from "./types";
 // import * as path from 'path';
 
-function parseDiceNotation(input: string): DicePool {
+export function parseDiceNotation(input: string): DicePool {
   const pool: DicePool = {
     boostDice: 0,
     abilityDice: 0,
@@ -78,16 +78,16 @@ function parseDiceNotation(input: string): DicePool {
         break;
       // blk/k/sb/s = Black/Setback
       case "blk":
-        pool.boostDice = count;
+        pool.setBackDice = count;
         break;
       case "k":
-        pool.boostDice = count;
+        pool.setBackDice = count;
         break;
       case "sb":
-        pool.boostDice = count;
+        pool.setBackDice = count;
         break;
       case "s":
-        pool.boostDice = count;
+        pool.setBackDice = count;
         break;
       // w/f = White/Force
       // TODO
@@ -97,7 +97,7 @@ function parseDiceNotation(input: string): DicePool {
   return pool;
 }
 
-function formatResult(result: any): string {
+export function formatResult(result: any): string {
   const parts = [];
   if (result.summary.successes > 0)
     parts.push(`${result.summary.successes} Success(es)`);
