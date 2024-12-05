@@ -1,5 +1,5 @@
 import { roll } from "../src/dice";
-import { DicePool, RollResult } from "../src/types";
+import { DicePool, DiceResult, RollResult } from "../src/types";
 
 // Mock Math.random for deterministic tests
 const mockMathRandom = (value: number) => {
@@ -79,6 +79,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -90,6 +92,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -101,6 +105,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -112,6 +118,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -123,6 +131,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -134,6 +144,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -155,6 +167,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -166,6 +180,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -177,6 +193,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -188,6 +206,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -199,6 +219,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -210,6 +232,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -221,6 +245,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -232,6 +258,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -253,6 +281,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -264,6 +294,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -275,6 +307,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -286,6 +320,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -297,6 +333,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -308,6 +346,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -319,6 +359,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -330,6 +372,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -341,6 +385,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -352,6 +398,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -363,6 +411,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -374,6 +424,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 1,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -395,6 +447,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -406,6 +460,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -417,6 +473,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -428,6 +486,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -439,6 +499,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -450,6 +512,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -471,6 +535,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -482,6 +548,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -493,6 +561,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -504,6 +574,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -515,6 +587,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -526,6 +600,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -537,6 +613,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 2,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -548,6 +626,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -569,6 +649,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -580,6 +662,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -591,6 +675,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -602,6 +688,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -613,6 +701,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -624,6 +714,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -635,6 +727,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -646,6 +740,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -657,6 +753,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 1,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -668,6 +766,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 2,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -679,6 +779,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 2,
             triumphs: 0,
             despair: 0,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
         [
@@ -690,6 +792,8 @@ describe("SWRPG Dice Rolling", () => {
             threats: 0,
             triumphs: 0,
             despair: 1,
+            lightSide: 0,
+            darkSide: 0,
           },
         ],
       ])("face value %i should return correct results", (value, expected) => {
@@ -711,13 +815,15 @@ describe("SWRPG Dice Rolling", () => {
         difficultyDice: -2,
         challengeDice: -1,
       };
-      const expected = {
+      const expected: DiceResult = {
         successes: 0,
         failures: 0,
         advantages: 0,
         threats: 0,
         triumphs: 0,
         despair: 0,
+        lightSide: 0,
+        darkSide: 0,
       };
       expect(roll(pool).summary).toEqual(expected);
     });
@@ -731,26 +837,30 @@ describe("SWRPG Dice Rolling", () => {
         difficultyDice: undefined,
         challengeDice: undefined,
       };
-      const expected = {
+      const expected: DiceResult = {
         successes: 0,
         failures: 0,
         advantages: 0,
         threats: 0,
         triumphs: 0,
         despair: 0,
+        lightSide: 0,
+        darkSide: 0,
       };
       expect(roll(pool).summary).toEqual(expected);
     });
 
     test("empty pool returns zero results", () => {
       const pool: DicePool = {};
-      const expected = {
+      const expected: DiceResult = {
         successes: 0,
         failures: 0,
         advantages: 0,
         threats: 0,
         triumphs: 0,
         despair: 0,
+        lightSide: 0,
+        darkSide: 0,
       };
       expect(roll(pool).summary).toEqual(expected);
     });
@@ -867,5 +977,67 @@ describe("SWRPG Dice Rolling", () => {
         expect(dieResult).toHaveProperty("result");
       });
     });
+  });
+});
+
+describe("Force Die (d12)", () => {
+  test.each([
+    [
+      1,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 1,
+        darkSide: 0,
+      },
+    ],
+    [
+      6,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 2,
+        darkSide: 0,
+      },
+    ],
+    [
+      8,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 0,
+        darkSide: 1,
+      },
+    ],
+    [
+      12,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 0,
+        darkSide: 2,
+      },
+    ],
+  ])("face value %i should return correct results", (value, expected) => {
+    const cleanup = mockMathRandom((value - 1) / 12);
+    const pool: DicePool = { forceDice: 1 };
+    expect(roll(pool).summary).toEqual(expected);
+    cleanup();
   });
 });

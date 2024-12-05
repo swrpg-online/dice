@@ -5,6 +5,7 @@ export type DicePool = {
   setBackDice?: number;
   difficultyDice?: number;
   challengeDice?: number;
+  forceDice?: number;
 };
 
 export type DiceResult = {
@@ -14,6 +15,8 @@ export type DiceResult = {
   threats: number;
   triumphs: number;
   despair: number;
+  lightSide: number;
+  darkSide: number;
 };
 
 export type DieType =
@@ -22,7 +25,8 @@ export type DieType =
   | "proficiency"
   | "setback"
   | "difficulty"
-  | "challenge";
+  | "challenge"
+  | "force";
 
 export type DetailedDieResult = {
   type: DieType;

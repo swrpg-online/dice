@@ -10,6 +10,8 @@ jest.mock("../src/dice", () => ({
       threats: 0,
       triumphs: 0,
       despair: 0,
+      lightSide: 0,
+      darkSide: 0,
     },
     results: [],
   })),
@@ -25,6 +27,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
 
       expect(parseDiceNotation("2pro")).toEqual({
@@ -34,6 +37,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
     });
 
@@ -45,6 +49,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
 
       expect(parseDiceNotation("1a")).toEqual({
@@ -54,6 +59,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
     });
 
@@ -65,6 +71,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 2,
         challengeDice: 1,
+        forceDice: 0,
       });
     });
 
@@ -76,6 +83,7 @@ describe("CLI", () => {
         setBackDice: 1,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
       expect(parseDiceNotation("1s")).toEqual({
         boostDice: 0,
@@ -84,6 +92,7 @@ describe("CLI", () => {
         setBackDice: 1,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
       expect(parseDiceNotation("1sb")).toEqual({
         boostDice: 0,
@@ -92,6 +101,7 @@ describe("CLI", () => {
         setBackDice: 1,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
       expect(parseDiceNotation("1k")).toEqual({
         boostDice: 0,
@@ -100,6 +110,7 @@ describe("CLI", () => {
         setBackDice: 1,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
     });
     test("handles invalid dice color", () => {
@@ -112,6 +123,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
     });
     test("handles invalid number format", () => {
@@ -124,6 +136,7 @@ describe("CLI", () => {
         setBackDice: 0,
         difficultyDice: 0,
         challengeDice: 0,
+        forceDice: 0,
       });
     });
   });
@@ -138,6 +151,8 @@ describe("CLI", () => {
           threats: 0,
           triumphs: 1,
           despair: 0,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
 
@@ -154,6 +169,8 @@ describe("CLI", () => {
           threats: 0,
           triumphs: 0,
           despair: 0,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
 
@@ -170,6 +187,8 @@ describe("CLI", () => {
           threats: 0,
           triumphs: 0,
           despair: 0,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
       expect(formatResult(result)).toBe("2 Success(es), 1 Failure(s)");
@@ -183,6 +202,8 @@ describe("CLI", () => {
           threats: 1,
           triumphs: 0,
           despair: 0,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
       expect(formatResult(result)).toBe("3 Advantage(s), 1 Threat(s)");
@@ -196,6 +217,8 @@ describe("CLI", () => {
           threats: 0,
           triumphs: 2,
           despair: 1,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
       expect(formatResult(result)).toBe(
@@ -211,6 +234,8 @@ describe("CLI", () => {
           threats: 3,
           triumphs: 0,
           despair: 0,
+          lightSide: 0,
+          darkSide: 0,
         },
       };
       expect(formatResult(result)).toBe("2 Failure(s), 3 Threat(s)");
@@ -229,6 +254,7 @@ describe("CLI Functions", () => {
         challengeDice: 1,
         difficultyDice: 2,
         setBackDice: 0,
+        forceDice: 0,
       };
       expect(parseDiceNotation(input)).toEqual(expected);
     });
@@ -241,6 +267,7 @@ describe("CLI Functions", () => {
         challengeDice: 1,
         difficultyDice: 1,
         setBackDice: 1,
+        forceDice: 0,
       };
       expect(parseDiceNotation(input)).toEqual(expected);
     });
@@ -253,6 +280,7 @@ describe("CLI Functions", () => {
         challengeDice: 0,
         difficultyDice: 0,
         setBackDice: 0,
+        forceDice: 0,
       };
       expect(parseDiceNotation(input)).toEqual(expected);
     });
@@ -268,6 +296,7 @@ describe("Error handling", () => {
       setBackDice: 0,
       difficultyDice: 0,
       challengeDice: 0,
+      forceDice: 0,
     });
   });
   test("handles malformed dice numbers", () => {
@@ -278,6 +307,7 @@ describe("Error handling", () => {
       setBackDice: 0,
       difficultyDice: 0,
       challengeDice: 0,
+      forceDice: 0,
     });
   });
 });

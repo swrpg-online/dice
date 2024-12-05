@@ -12,6 +12,7 @@ export function parseDiceNotation(input: string): DicePool {
     setBackDice: 0,
     difficultyDice: 0,
     challengeDice: 0,
+    forceDice: 0,
   };
 
   // function getImagePath(type: string): string {
@@ -38,45 +39,45 @@ export function parseDiceNotation(input: string): DicePool {
 
   for (const part of parts) {
     const count = parseInt(part);
-    const color = part.slice(String(count).length);
+    const color = part.slice(String(count).length).toLowerCase();
 
     switch (color) {
-      // y/pro = Yellow/Proficiency
+      // y/pro = Yellow / Proficiency
       case "y":
         pool.proficiencyDice = count;
         break;
       case "pro":
         pool.proficiencyDice = count;
         break;
-      // g/a = Green/Ability
+      // g/a = Green / Ability
       case "g":
         pool.abilityDice = count;
         break;
       case "a":
         pool.abilityDice = count;
         break;
-      // b/boo = Blue/Boost
+      // b/boo = Blue / Boost
       case "b":
         pool.boostDice = count;
         break;
       case "boo":
         pool.boostDice = count;
         break;
-      // r/c = Red/ Challenge
+      // r/c = Red / Challenge
       case "r":
         pool.challengeDice = count;
         break;
       case "c":
         pool.challengeDice = count;
         break;
-      // p/diff = Purple/ Difficulty
+      // p/diff = Purple / Difficulty
       case "p":
         pool.difficultyDice = count;
         break;
       case "diff":
         pool.difficultyDice = count;
         break;
-      // blk/k/sb/s = Black/Setback
+      // blk/k/sb/s = Black / Setback
       case "blk":
         pool.setBackDice = count;
         break;
@@ -89,8 +90,13 @@ export function parseDiceNotation(input: string): DicePool {
       case "s":
         pool.setBackDice = count;
         break;
-      // w/f = White/Force
-      // TODO
+      // w/f = White / Force
+      case "w":
+        pool.forceDice = count;
+        break;
+      case "f":
+        pool.forceDice = count;
+        break;
     }
   }
 
@@ -111,6 +117,10 @@ export function formatResult(result: any): string {
     parts.push(`${result.summary.triumphs} Triumph(s)`);
   if (result.summary.despair > 0)
     parts.push(`${result.summary.despair} Despair(s)`);
+  if (result.summary.lightSide > 0)
+    parts.push(`${result.summary.lightSide} Light Side(s)`);
+  if (result.summary.darkSide > 0)
+    parts.push(`${result.summary.darkSide} Dark Side(s)`);
 
   return parts.join(", ") || "No effects";
 }
@@ -125,6 +135,7 @@ export const main = () => {
         - r/c = Red / Challenge
         - p/diff = Purple / Difficulty
         - blk/k/sb/s = Black / Setback
+        - w/f = White/Force
     `);
     process.exit(1);
   }
