@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/swrpg-online/dice/compare/v1.0.1...v1.0.2) (2024-12-05)
+
+### Bug Fixes
+
+- update configs for dist folder ([3328779](https://github.com/swrpg-online/dice/commit/3328779554e84faa49a053c0ff2d9a8fa3762023))
+
 ## [1.0.1](https://github.com/swrpg-online/dice/compare/v1.0.0...v1.0.1) (2024-12-05)
 
 ### Bug Fixes
