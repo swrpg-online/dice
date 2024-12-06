@@ -144,6 +144,7 @@ describe("CLI", () => {
   describe("formatResult", () => {
     test("should format results with all positive outcomes", () => {
       const result = {
+        results: [],
         summary: {
           successes: 2,
           failures: 0,
@@ -162,6 +163,7 @@ describe("CLI", () => {
 
     test('should return "No effects" when no results', () => {
       const result = {
+        results: [],
         summary: {
           successes: 0,
           failures: 0,
@@ -180,6 +182,7 @@ describe("CLI", () => {
 
     test("formats successes and failures correctly", () => {
       const result = {
+        results: [],
         summary: {
           successes: 2,
           failures: 1,
@@ -195,6 +198,7 @@ describe("CLI", () => {
     });
     test("formats advantages and threats correctly", () => {
       const result = {
+        results: [],
         summary: {
           successes: 0,
           failures: 0,
@@ -210,6 +214,7 @@ describe("CLI", () => {
     });
     test("formats triumphs and despairs correctly", () => {
       const result = {
+        results: [],
         summary: {
           successes: 1,
           failures: 0,
@@ -227,6 +232,7 @@ describe("CLI", () => {
     });
     test("handles failure with threats", () => {
       const result = {
+        results: [],
         summary: {
           successes: 0,
           failures: 2,

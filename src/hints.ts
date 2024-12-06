@@ -1,0 +1,286 @@
+import { SYMBOLS, type Symbol } from "./types";
+
+// 1 advantage or 1 triumph
+const recoverOneStrain = "Recover one strain (may be applied more than once).";
+const addBoostDieToActiveAlly =
+  "Add a boost die to the next allied active character's check.";
+const noticeImportantPoint =
+  "Notice a single important point in the ongoing conflict, such as the location of a blast door's control panel or a weak point on an attack speeder.";
+const inflictCriticalInjury =
+  "Inflict a Critical Injury with a successful attack that deals damage past soak (Advantage cost may vary).";
+const activateWeaponQuality =
+  "Activate a weapon quality (Advantage cost may vary).";
+
+// 2 advantage or 1 triumph
+const performManeuver =
+  "Perform an immediate free maneuver that does not exceed the two maneuver per turn limit.";
+const addSetbackDie =
+  "Add a setback die to the targeted character's next check.";
+const addBoostDieToAnyAlly =
+  "Add a boost die to any allied character's next check, including that of the active character.";
+
+// 3 advantage or 1 triumph
+const negateEnemy =
+  "Negate the targeted enemy's defensive bonuses (such as the defense gained from cover, equipment, or performing the Guarded Stance maneuver) util the end of the current round.";
+const ignoreEnvironment =
+  "Ignore penalizing environmental effects such as inclement weather, zero gravity, or similar circumstances until the end of the active character's next turn.";
+const disableOpponent =
+  "When dealing damage to a target, have the attack disable the opponent or one piece of gear rather than dealing wounds or strain. This could include hobbling them temporarily with a shot to the leg, or disabling their comlink. This should be agreed upon by the player and the GM, and the effects are up to the GM (although Table 6-10: Critical Injury Result is a god resource to consult for possible effects). The effects should be temporary and not too excessive.";
+const gainDefense =
+  "Gain + 1 melee or ranged defense until the end of the active character's next turn.";
+const dropWeapon =
+  "Force the target to drop a melee or ranged weapon they are wielding.";
+
+// 1 triumph
+const upgradeDifficultyTargetedCharacter =
+  "Upgrade the difficulty of the targeted character's next check.";
+const doSomethingVital =
+  "Do something vital, such as shooting the controls to the nearby blast doors to seal them shut.";
+const upgradeAnyAllyCheck =
+  "Upgrade any allied character's next check, including that of the current active character.";
+
+// 2 triumph
+const destroyEquipment =
+  "When dealing damage to a target, have the attack destroy a piece of equipment the target is using, such as blowing up his blaster or destroying a personal shield generator.";
+
+// 1 threat or 1 despair
+const sufferStrain = "The active character suffers 1 strain.";
+const loseManeuverBenefit =
+  "The active character loses the benefits of a prior maneuver (such as from taking cover or assuming a Guarded Stance) until they perform the maneuver again.";
+
+// 2 threat or 1 despair
+const freeManeuver =
+  "An opponent may immediately perform one free maneuver in response to the active character's check.";
+const addBoostDieToTargetedCharacter =
+  "Add a boost die to the targeted character's next check.";
+const sufferSetback =
+  "The active character or an allied character suffers a setback die on their next action.";
+
+// 3 threat or 1 despair
+const fallProne = "The active character falls prone.";
+const gainSignificantAdvantage =
+  "The active character grants the enemy a significant advantage in the ongoing encounter, such as accidentally blasting the controls to a bridge the active character was planning to use for their escape.";
+
+// 1 despair
+const outOfAmmo =
+  "The character's ranged weapon imediately runs out of ammunition and may not be used for the remainder of the encounter.";
+const upgradeDifficultyAlliedCharacter =
+  "Upgrade the difficulty of an allied character's next check, including that of the current active character.";
+const damagedItem =
+  "The tool or melee weapon the character is using becomes damaged.";
+
+export type CostType = {
+  [key in Symbol]?: number;
+};
+
+type Hint = {
+  description: string;
+  cost: CostType;
+};
+
+export const hints: Hint[] = [
+  // 1 advantage or 1 triumph
+  {
+    description: recoverOneStrain,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 1,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: addBoostDieToActiveAlly,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 1,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: noticeImportantPoint,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 1,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: inflictCriticalInjury,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 1,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: activateWeaponQuality,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 1,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  // 2 advantage or 1 triumph
+  {
+    description: performManeuver,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 2,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: addSetbackDie,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 2,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: addBoostDieToAnyAlly,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 2,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  // 3 advantage or 1 triumph
+  {
+    description: negateEnemy,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 3,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: ignoreEnvironment,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 3,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: disableOpponent,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 3,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: gainDefense,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 3,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: dropWeapon,
+    cost: {
+      [SYMBOLS.ADVANTAGE]: 3,
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  // 1 triumph
+  {
+    description: upgradeDifficultyTargetedCharacter,
+    cost: {
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: doSomethingVital,
+    cost: {
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  {
+    description: upgradeAnyAllyCheck,
+    cost: {
+      [SYMBOLS.TRIUMPH]: 1,
+    },
+  },
+  // 2 triumph
+  {
+    description: destroyEquipment,
+    cost: {
+      [SYMBOLS.TRIUMPH]: 2,
+    },
+  },
+  // 1 threat or 1 despair
+  {
+    description: sufferStrain,
+    cost: {
+      [SYMBOLS.THREAT]: 1,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: loseManeuverBenefit,
+    cost: {
+      [SYMBOLS.THREAT]: 1,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  // 2 threat or 1 despair
+  {
+    description: freeManeuver,
+    cost: {
+      [SYMBOLS.THREAT]: 2,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: addBoostDieToTargetedCharacter,
+    cost: {
+      [SYMBOLS.THREAT]: 1,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: sufferSetback,
+    cost: {
+      [SYMBOLS.THREAT]: 2,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  // 3 threat or 1 despair
+  {
+    description: fallProne,
+    cost: {
+      [SYMBOLS.THREAT]: 3,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: gainSignificantAdvantage,
+    cost: {
+      [SYMBOLS.THREAT]: 3,
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  // 1 despair
+  {
+    description: outOfAmmo,
+    cost: {
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: upgradeDifficultyAlliedCharacter,
+    cost: {
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+  {
+    description: damagedItem,
+    cost: {
+      [SYMBOLS.DESPAIR]: 1,
+    },
+  },
+];
+
+export function hintCostDisplayText(hint: Hint): string {
+  if (!hint.cost || Object.keys(hint.cost).length === 0) {
+    return "No cost";
+  }
+  const parts = Object.entries(hint.cost)
+    .filter(([_, count]) => count && count > 0)
+    .map(([symbol, count]) => {
+      const symbolName = symbol.charAt(0) + symbol.toLowerCase().slice(1);
+      return `${count} ${symbolName}${count > 1 ? "(s)" : ""}`;
+    });
+  return parts.length > 0 ? parts.join(" or ") : "No cost";
+}
