@@ -1,7 +1,34 @@
 {
   "name": "@swrpg-online/dice",
   "version": "0.9.0",
-  "description": "A TypeScript library for simulating Star Wars RPG narrative dice rolls.",
+  "description": "A TypeScript library that creates dice rolls using the narrative dice system for the Star Wars Roleplaying Game by Fantasy Flight Games and Edge Studio.",
+  "keywords": [
+    "swrpg",
+    "dice",
+    "rpg",
+    "star wars",
+    "star-wars",
+    "rpg",
+    "dice",
+    "edge-studio",
+    "narrative-dice",
+    "typescript",
+    "cli",
+    "swrpg",
+    "genesys",
+    "fantasy-flight-games",
+    "ffg",
+    "roleplaying",
+    "tabletop",
+    "dice-roller"
+  ],
+  "homepage": "https://github.com/swrpg-online/dice",
+  "bugs": {
+    "url": "https://github.com/swrpg-online/dice/issues"
+  },
+  "license": "MIT",
+  "author": "@swrpg-online",
+  "contributors": [],
   "main": "dist/index.js",
   "bin": {
     "swrpg-dice": "dist/cli.js"
@@ -22,9 +49,6 @@
     "build": "tsc && ls -l",
     "prepare": "npm run build && husky install"
   },
-  "keywords": [],
-  "author": "@swrpg-online",
-  "license": "MIT",
   "dependencies": {
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.0",
@@ -45,6 +69,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/swrpg-online/dice"
+  },
+  "engines": {
+    "node": ">=21"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
