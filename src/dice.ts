@@ -1,4 +1,11 @@
-import { DicePool, RollResult, DiceResult, DetailedDieResult } from "./types";
+import { hintCostDisplayText, hints } from "./hints";
+import {
+  DicePool,
+  RollResult,
+  DiceResult,
+  DetailedDieResult,
+  RollOptions,
+} from "./types";
 
 const rollDie = (sides: number): number =>
   Math.floor(Math.random() * sides) + 1;
@@ -491,7 +498,10 @@ const forceDieResult = (roll: number): DiceResult => {
   }
 };
 
-const sumResults = (results: DiceResult[]): DiceResult => {
+const sumResults = (
+  results: DiceResult[],
+  options?: RollOptions,
+): DiceResult => {
   const sums = results.reduce(
     (acc, curr) => ({
       successes: acc.successes + curr.successes,
@@ -515,7 +525,6 @@ const sumResults = (results: DiceResult[]): DiceResult => {
     },
   );
 
-  // Calculate net successes/failures
   let netSuccesses = 0;
   let netFailures = 0;
 
@@ -528,7 +537,7 @@ const sumResults = (results: DiceResult[]): DiceResult => {
     netFailures = sums.failures - sums.successes;
   }
 
-  return {
+  const result: DiceResult = {
     successes: netSuccesses,
     failures: netFailures,
     advantages: sums.advantages,
@@ -538,10 +547,11 @@ const sumResults = (results: DiceResult[]): DiceResult => {
     lightSide: sums.lightSide,
     darkSide: sums.darkSide,
   };
+
+  return result;
 };
 
-export const roll = (pool: DicePool): RollResult => {
-  // Initialize all dice counts to 0 if undefined
+export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
   const boostCount = pool.boostDice ?? 0;
   const abilityCount = pool.abilityDice ?? 0;
   const proficiencyCount = pool.proficiencyDice ?? 0;
@@ -633,8 +643,25 @@ export const roll = (pool: DicePool): RollResult => {
     });
   }
 
+  const summary = sumResults(detailedResults.map((r) => r.result));
+
+  if (options?.hints) {
+    const applicableHints = hints.filter((hint) => {
+      const { cost } = hint;
+      return Object.entries(cost).some(([symbol, required]) => {
+        const summaryKey = (symbol.toLowerCase() + "s") as keyof typeof summary;
+        const value = summary[summaryKey];
+        if (typeof value !== "number") return false;
+        return required <= value;
+      });
+    });
+    summary.hints = applicableHints.map(
+      (hint) => `${hintCostDisplayText(hint)} - ${hint.description}`,
+    );
+  }
+
   return {
     results: detailedResults,
-    summary: sumResults(detailedResults.map((r) => r.result)),
+    summary: summary,
   };
 };

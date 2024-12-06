@@ -7,25 +7,71 @@
 
 A TypeScript library that creates dice rolls using the [narrative dice system](https://star-wars-rpg-ffg.fandom.com/wiki/Narrative_Dice) for the Star Wars Role-Playing Game by [Fantasy Flight Games](https://www.fantasyflightgames.com/en/starwarsrpg/) and [Edge Studio](https://www.edge-studio.net/categories-games/starwarsrpg/).
 
+## Features
+
+- Complete narrative dice system implementation
+- Detailed roll breakdown for each die
+- Action hints to suggest possible uses for advantages, triumphs, etc.
+- Roll results include:
+  - Successes / Failures
+  - Advantages / Threats
+  - Triumphs / Despairs
+  - Light / Dark Side Points (Force dice)
+- Comprehensive Test Coverage
+- The safety of TypeScript
+- CLI Support
+
 ## Installation
+
+### As a CLI Tool
+
+To use the dice roller from the command line:
+
+```bash
+npm i -g @swrpg-online/dice
+```
+
+### As a project dependency
 
 ```bash
 npm i @swrpg-online/dice
 ```
 
-or optionally to use as a CLI command you can install globally with `npm i -g @swrpg-online/dice`
+## CLI Usage
 
-## Features
+```
+swrpg-dice <dice-notation> [options]
+```
 
-- Complete narrative dice system implementation
-- Detailed roll breakdown for each die
-- Comprehensive test coverage
-- TypeScript type safety
-- roll from a CLI
+Example:
 
-## Usage
+```
+swrpg-dice 2y 1g 1p 1b 1sb --hints
+```
 
-via code:
+Output:
+
+```
+1 Success(es), 4 Advantage(s), 1 Threat(s)
+
+Possible actions:
+ • 1 Advantage or 1 Triumph - Recover one strain (may be applied more than once).
+ • 1 Advantage or 1 Triumph - Add a boost die to the next allied active character's check.
+ • 1 Advantage or 1 Triumph - Notice a single important point in the ongoing conflict, such as the location of a blast door's control panel or
+ ...
+```
+
+Dice Options:
+
+- y/pro = Yellow / Proficiency
+- g/a = Green / Ability
+- b/boo = Blue / Boost
+- r/c = Red / Challenge
+- p/diff = Purple / Difficulty
+- blk/k/sb/s = Black / Setback
+- w/f = White / Force
+
+## Programmatic Usage
 
 ```typescript
 import { roll, DicePool } from '@swrpg-online/dice';
@@ -39,9 +85,8 @@ const pool: DicePool = {
 
 const result = roll(pool);
 
-// Access detailed results
-console.log(result.results);  // Array of individual die results
-console.log(result.summary);  // Summary of total successes, advantages, etc.
+console.log(result.results);
+console.log(result.summary);
 
 => {
   "results": [
@@ -52,18 +97,6 @@ console.log(result.summary);  // Summary of total successes, advantages, etc.
         "successes": 0,
         "failures": 0,
         "advantages": 1,
-        "threats": 0,
-        "triumphs": 0,
-        "despair": 0
-      }
-    },
-    {
-      "type": "ability",
-      "roll": 3,
-      "result": {
-        "successes": 1,
-        "failures": 0,
-        "advantages": 0,
         "threats": 0,
         "triumphs": 0,
         "despair": 0
@@ -81,30 +114,7 @@ console.log(result.summary);  // Summary of total successes, advantages, etc.
         "despair": 0
       }
     },
-    {
-      "type": "difficulty",
-      "roll": 2,
-      "result": {
-        "successes": 0,
-        "failures": 1,
-        "advantages": 0,
-        "threats": 0,
-        "triumphs": 0,
-        "despair": 0
-      }
-    },
-    {
-      "type": "challenge",
-      "roll": 11,
-      "result": {
-        "successes": 0,
-        "failures": 0,
-        "advantages": 0,
-        "threats": 2,
-        "triumphs": 0,
-        "despair": 0
-      }
-    }
+    ...
   ],
   "summary": {
     "successes": 0,
@@ -117,21 +127,9 @@ console.log(result.summary);  // Summary of total successes, advantages, etc.
 }
 ```
 
-Each roll result includes:
+# License
 
-- Detailed breakdown of each die roll
-- Die type identification
-- Individual results per die
-- Overall summary of the roll
-
-# Roadmap or Under Review
-
-- implement the Force die
-- implement ability to add success, failure, and so on to dice pools
-- ship combat?
-- crits?
-- polyhedral dice for convenience?
-- anything else?
+This project is licensed under the MIT License.
 
 # Contribution
 

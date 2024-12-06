@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { roll } from "./dice";
-import { DicePool } from "./types";
+import { DicePool, RollResult } from "./types";
 // import * as path from 'path';
 
 export function parseDiceNotation(input: string): DicePool {
@@ -14,26 +14,6 @@ export function parseDiceNotation(input: string): DicePool {
     challengeDice: 0,
     forceDice: 0,
   };
-
-  // function getImagePath(type: string): string {
-  //     const basePath = path.join(__dirname, 'images');
-  //     switch (type) {
-  //       case 'successes':
-  //         return path.join(basePath, 'success.svg'); // Adjust path and extension as needed
-  //       case 'failures':
-  //         return path.join(basePath, 'failure.svg');
-  //       case 'advantages':
-  //         return path.join(basePath, 'advantage.svg');
-  //       case 'threats':
-  //         return path.join(basePath, 'threat.svg');
-  //       case 'triumphs':
-  //         return path.join(basePath, 'triumph.svg');
-  //       case 'despair':
-  //         return path.join(basePath, 'despair.svg');
-  //       default:
-  //         return '';
-  //     }
-  //   }
 
   const parts = input.toLowerCase().trim().split(" ");
 
@@ -103,32 +83,43 @@ export function parseDiceNotation(input: string): DicePool {
   return pool;
 }
 
-export function formatResult(result: any): string {
-  const parts = [];
-  if (result.summary.successes > 0)
-    parts.push(`${result.summary.successes} Success(es)`);
-  if (result.summary.failures > 0)
-    parts.push(`${result.summary.failures} Failure(s)`);
-  if (result.summary.advantages > 0)
-    parts.push(`${result.summary.advantages} Advantage(s)`);
-  if (result.summary.threats > 0)
-    parts.push(`${result.summary.threats} Threat(s)`);
-  if (result.summary.triumphs > 0)
-    parts.push(`${result.summary.triumphs} Triumph(s)`);
-  if (result.summary.despair > 0)
-    parts.push(`${result.summary.despair} Despair(s)`);
-  if (result.summary.lightSide > 0)
-    parts.push(`${result.summary.lightSide} Light Side(s)`);
-  if (result.summary.darkSide > 0)
-    parts.push(`${result.summary.darkSide} Dark Side(s)`);
+export const formatResult = (result: RollResult): string => {
+  const effects: string[] = [];
 
-  return parts.join(", ") || "No effects";
-}
+  if (result.summary.successes > 0)
+    effects.push(`${result.summary.successes} Success(es)`);
+  if (result.summary.failures > 0)
+    effects.push(`${result.summary.failures} Failure(s)`);
+  if (result.summary.advantages > 0)
+    effects.push(`${result.summary.advantages} Advantage(s)`);
+  if (result.summary.threats > 0)
+    effects.push(`${result.summary.threats} Threat(s)`);
+  if (result.summary.triumphs > 0)
+    effects.push(`${result.summary.triumphs} Triumph(s)`);
+  if (result.summary.despair > 0)
+    effects.push(`${result.summary.despair} Despair(s)`);
+
+  const resultText = effects.length > 0 ? effects.join(", ") : "No effects";
+
+  if (result.summary.hints && result.summary.hints.length > 0) {
+    return `${resultText}\n\nPossible actions:\n${result.summary.hints.map((hint) => " • " + hint).join("\n")}`;
+  }
+  return resultText;
+};
 
 export const main = () => {
-  const input = process.argv.slice(2).join(" ");
-  if (!input) {
-    console.log(`Usage: > swrpg-dice 2y 1g 2p 1r
+  const args = process.argv.slice(2);
+  const hintsIndex = args.indexOf("--hints");
+  const showHints = hintsIndex !== -1;
+  const diceNotation =
+    hintsIndex !== -1
+      ? args.filter((_, index) => index !== hintsIndex).join(" ")
+      : args.join(" ");
+
+  if (!diceNotation.trim()) {
+    console.log(`Usage: swrpg-dice <dice-notation> <dice-options>
+      Example: swrpg-dice 2y 1g 1p 1b 1sb --hints
+      Dice Options:
         - y/pro = Yellow / Proficiency
         - g/a = Green / Ability
         - b/boo = Blue / Boost
@@ -136,12 +127,13 @@ export const main = () => {
         - p/diff = Purple / Difficulty
         - blk/k/sb/s = Black / Setback
         - w/f = White/Force
-    `);
+      Options:
+        --hints  Show possible actions based on roll results`);
     process.exit(1);
   }
 
-  const pool = parseDiceNotation(input);
-  const result = roll(pool);
+  const pool = parseDiceNotation(diceNotation);
+  const result = roll(pool, { hints: showHints });
   console.log(formatResult(result));
 };
 

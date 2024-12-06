@@ -17,6 +17,7 @@ export type DiceResult = {
   despair: number;
   lightSide: number;
   darkSide: number;
+  hints?: string[];
 };
 
 export type DieType =
@@ -37,4 +38,21 @@ export type DetailedDieResult = {
 export type RollResult = {
   results: DetailedDieResult[];
   summary: DiceResult;
+};
+
+export const SYMBOLS = {
+  SUCCESS: "SUCCESS" as const,
+  FAILURE: "FAILURE" as const,
+  ADVANTAGE: "ADVANTAGE" as const,
+  THREAT: "THREAT" as const,
+  TRIUMPH: "TRIUMPH" as const,
+  DESPAIR: "DESPAIR" as const,
+  LIGHT: "LIGHT" as const,
+  DARK: "DARK" as const,
+} as const;
+
+export type Symbol = keyof typeof SYMBOLS;
+
+export type RollOptions = {
+  hints?: boolean;
 };
