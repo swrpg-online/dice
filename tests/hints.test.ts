@@ -187,7 +187,7 @@ describe("Hint Display System", () => {
 
     test("hints with OR conditions have multiple cost options", () => {
       const hintsWithOrConditions = hints.filter(
-        (hint) => Object.keys(hint.cost).length > 1
+        (hint) => Object.keys(hint.cost).length > 1,
       );
 
       expect(hintsWithOrConditions.length).toBeGreaterThan(0);
@@ -200,7 +200,7 @@ describe("Hint Display System", () => {
 
     test("advantage hints are properly structured", () => {
       const advantageHints = hints.filter(
-        (hint) => SYMBOLS.ADVANTAGE in hint.cost
+        (hint) => SYMBOLS.ADVANTAGE in hint.cost,
       );
 
       expect(advantageHints.length).toBeGreaterThan(0);
@@ -213,9 +213,7 @@ describe("Hint Display System", () => {
     });
 
     test("threat hints are properly structured", () => {
-      const threatHints = hints.filter(
-        (hint) => SYMBOLS.THREAT in hint.cost
-      );
+      const threatHints = hints.filter((hint) => SYMBOLS.THREAT in hint.cost);
 
       expect(threatHints.length).toBeGreaterThan(0);
 
@@ -229,8 +227,7 @@ describe("Hint Display System", () => {
     test("triumph-only hints exist", () => {
       const triumphOnlyHints = hints.filter(
         (hint) =>
-          Object.keys(hint.cost).length === 1 &&
-          SYMBOLS.TRIUMPH in hint.cost
+          Object.keys(hint.cost).length === 1 && SYMBOLS.TRIUMPH in hint.cost,
       );
 
       expect(triumphOnlyHints.length).toBeGreaterThan(0);
@@ -239,8 +236,7 @@ describe("Hint Display System", () => {
     test("despair-only hints exist", () => {
       const despairOnlyHints = hints.filter(
         (hint) =>
-          Object.keys(hint.cost).length === 1 &&
-          SYMBOLS.DESPAIR in hint.cost
+          Object.keys(hint.cost).length === 1 && SYMBOLS.DESPAIR in hint.cost,
       );
 
       expect(despairOnlyHints.length).toBeGreaterThan(0);
