@@ -180,6 +180,179 @@ describe("CLI", () => {
       expect(formatted).toBe("No effects");
     });
 
+    test("should format results with hints", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 2,
+          failures: 0,
+          advantages: 2,
+          threats: 0,
+          triumphs: 0,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [
+            "1 Advantage - Recover one strain",
+            "2 Advantages OR 1 Triumph - Perform a free maneuver",
+          ],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toContain("2 Success(es), 2 Advantage(s)");
+      expect(formatted).toContain("Possible actions:");
+      expect(formatted).toContain(" • 1 Advantage - Recover one strain");
+      expect(formatted).toContain(" • 2 Advantages OR 1 Triumph - Perform a free maneuver");
+    });
+
+    test("should format results with empty hints array", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 1,
+          failures: 0,
+          advantages: 0,
+          threats: 0,
+          triumphs: 0,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toBe("1 Success(es)");
+      expect(formatted).not.toContain("Possible actions:");
+    });
+
+    test("should format results with multiple hints", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 0,
+          failures: 0,
+          advantages: 3,
+          threats: 0,
+          triumphs: 1,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [
+            "1 Advantage - Recover strain",
+            "2 Advantages OR 1 Triumph - Add boost die",
+            "3 Advantages OR 1 Triumph - Negate defense",
+            "1 Triumph - Upgrade difficulty",
+          ],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toContain("3 Advantage(s), 1 Triumph(s)");
+      expect(formatted).toContain("Possible actions:");
+      const lines = formatted.split("\n");
+      const hintLines = lines.filter(line => line.includes(" • "));
+      expect(hintLines).toHaveLength(4);
+    });
+
+    test("should format results with threat hints", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 0,
+          failures: 1,
+          advantages: 0,
+          threats: 2,
+          triumphs: 0,
+          despair: 1,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [
+            "1 Threat OR 1 Despair - Suffer strain",
+            "2 Threats OR 1 Despair - Opponent free maneuver",
+            "1 Despair - Weapon damaged",
+          ],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toContain("1 Failure(s), 2 Threat(s), 1 Despair(s)");
+      expect(formatted).toContain("Possible actions:");
+      expect(formatted).toContain(" • 1 Threat OR 1 Despair - Suffer strain");
+      expect(formatted).toContain(" • 2 Threats OR 1 Despair - Opponent free maneuver");
+      expect(formatted).toContain(" • 1 Despair - Weapon damaged");
+    });
+
+    test("should handle undefined hints", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 2,
+          failures: 0,
+          advantages: 1,
+          threats: 0,
+          triumphs: 0,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          // hints is undefined
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toBe("2 Success(es), 1 Advantage(s)");
+      expect(formatted).not.toContain("Possible actions:");
+    });
+
+    test("should format mixed positive and negative results with hints", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 1,
+          failures: 0,
+          advantages: 2,
+          threats: 1,
+          triumphs: 0,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [
+            "2 Advantages OR 1 Triumph - Add setback die",
+            "1 Threat OR 1 Despair - Lose maneuver benefit",
+          ],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toContain("1 Success(es), 2 Advantage(s), 1 Threat(s)");
+      expect(formatted).toContain("Possible actions:");
+      expect(formatted).toContain(" • 2 Advantages OR 1 Triumph - Add setback die");
+      expect(formatted).toContain(" • 1 Threat OR 1 Despair - Lose maneuver benefit");
+    });
+
+    test("should handle single hint correctly", () => {
+      const result = {
+        results: [],
+        summary: {
+          successes: 0,
+          failures: 0,
+          advantages: 1,
+          threats: 0,
+          triumphs: 0,
+          despair: 0,
+          lightSide: 0,
+          darkSide: 0,
+          hints: [
+            "1 Advantage - Recover one strain",
+          ],
+        },
+      };
+
+      const formatted = formatResult(result);
+      expect(formatted).toBe("1 Advantage(s)\n\nPossible actions:\n • 1 Advantage - Recover one strain");
+    });
+
     test("formats successes and failures correctly", () => {
       const result = {
         results: [],
@@ -584,6 +757,30 @@ describe("CLI main function", () => {
       'Warning: Invalid dice notation: "invalid" - number not found',
     );
     // Check that the result was still displayed
+    expect(mockConsoleLog).toHaveBeenCalled();
+  });
+
+  test("processes dice with --hints flag", () => {
+    process.argv = ["node", "script.js", "2y", "1g", "--hints"];
+    expect(() => main()).not.toThrow();
+    expect(mockConsoleLog).toHaveBeenCalled();
+  });
+
+  test("handles --hints flag in middle of arguments", () => {
+    process.argv = ["node", "script.js", "1y", "--hints", "2g"];
+    expect(() => main()).not.toThrow();
+    expect(mockConsoleLog).toHaveBeenCalled();
+  });
+
+  test("handles --hints flag at beginning", () => {
+    process.argv = ["node", "script.js", "--hints", "1y", "2g"];
+    expect(() => main()).not.toThrow();
+    expect(mockConsoleLog).toHaveBeenCalled();
+  });
+
+  test("processes dice without --hints flag", () => {
+    process.argv = ["node", "script.js", "2y", "1g", "1p"];
+    expect(() => main()).not.toThrow();
     expect(mockConsoleLog).toHaveBeenCalled();
   });
 });
