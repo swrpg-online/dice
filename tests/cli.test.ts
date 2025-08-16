@@ -523,10 +523,8 @@ describe("CLI main function", () => {
   const mockConsoleLog = jest
     .spyOn(console, "log")
     .mockImplementation(() => {});
-  // Mock console.error
-  const mockConsoleError = jest
-    .spyOn(console, "error")
-    .mockImplementation(() => {});
+  // Mock console.error - create a fresh spy for this test suite
+  let mockConsoleError: jest.SpyInstance;
   // Mock process.exit
   const mockExit = jest.spyOn(process, "exit").mockImplementation((number) => {
     throw new Error("process.exit: " + number);
@@ -536,18 +534,20 @@ describe("CLI main function", () => {
 
   beforeEach(() => {
     process.argv = ["node", "script.js"]; // Reset to default
+    mockConsoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
   });
 
   afterEach(() => {
     mockConsoleLog.mockClear();
-    mockConsoleError.mockClear();
+    mockConsoleError.mockRestore();
     mockExit.mockClear();
   });
 
   afterAll(() => {
     process.argv = originalArgv;
     mockConsoleLog.mockRestore();
-    mockConsoleError.mockRestore();
     mockExit.mockRestore();
   });
 
@@ -567,8 +567,10 @@ describe("CLI main function", () => {
   test("shows error message for completely invalid notation", () => {
     process.argv = ["node", "script.js", "invalid", "xyz"];
     expect(() => main()).toThrow("process.exit: 1");
-    expect(mockConsoleError).toHaveBeenCalledWith(
-      expect.stringContaining("Error: No valid dice found"),
+    // Multiple console.error calls are made - check for the main error message
+    const errorCalls = mockConsoleError.mock.calls.map((call) => call[0]);
+    expect(errorCalls).toContain(
+      "\nError: No valid dice found in the notation.",
     );
   });
 
@@ -577,7 +579,8 @@ describe("CLI main function", () => {
     // This should still work since it has some valid dice
     expect(() => main()).not.toThrow();
     // Check that warning was logged for invalid notation
-    expect(mockConsoleError).toHaveBeenCalledWith(
+    const errorCalls = mockConsoleError.mock.calls.map((call) => call[0]);
+    expect(errorCalls).toContain(
       'Warning: Invalid dice notation: "invalid" - number not found',
     );
     // Check that the result was still displayed
