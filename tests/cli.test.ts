@@ -203,7 +203,9 @@ describe("CLI", () => {
       expect(formatted).toContain("2 Success(es), 2 Advantage(s)");
       expect(formatted).toContain("Possible actions:");
       expect(formatted).toContain(" • 1 Advantage - Recover one strain");
-      expect(formatted).toContain(" • 2 Advantages OR 1 Triumph - Perform a free maneuver");
+      expect(formatted).toContain(
+        " • 2 Advantages OR 1 Triumph - Perform a free maneuver",
+      );
     });
 
     test("should format results with empty hints array", () => {
@@ -252,7 +254,7 @@ describe("CLI", () => {
       expect(formatted).toContain("3 Advantage(s), 1 Triumph(s)");
       expect(formatted).toContain("Possible actions:");
       const lines = formatted.split("\n");
-      const hintLines = lines.filter(line => line.includes(" • "));
+      const hintLines = lines.filter((line) => line.includes(" • "));
       expect(hintLines).toHaveLength(4);
     });
 
@@ -280,7 +282,9 @@ describe("CLI", () => {
       expect(formatted).toContain("1 Failure(s), 2 Threat(s), 1 Despair(s)");
       expect(formatted).toContain("Possible actions:");
       expect(formatted).toContain(" • 1 Threat OR 1 Despair - Suffer strain");
-      expect(formatted).toContain(" • 2 Threats OR 1 Despair - Opponent free maneuver");
+      expect(formatted).toContain(
+        " • 2 Threats OR 1 Despair - Opponent free maneuver",
+      );
       expect(formatted).toContain(" • 1 Despair - Weapon damaged");
     });
 
@@ -327,8 +331,12 @@ describe("CLI", () => {
       const formatted = formatResult(result);
       expect(formatted).toContain("1 Success(es), 2 Advantage(s), 1 Threat(s)");
       expect(formatted).toContain("Possible actions:");
-      expect(formatted).toContain(" • 2 Advantages OR 1 Triumph - Add setback die");
-      expect(formatted).toContain(" • 1 Threat OR 1 Despair - Lose maneuver benefit");
+      expect(formatted).toContain(
+        " • 2 Advantages OR 1 Triumph - Add setback die",
+      );
+      expect(formatted).toContain(
+        " • 1 Threat OR 1 Despair - Lose maneuver benefit",
+      );
     });
 
     test("should handle single hint correctly", () => {
@@ -343,14 +351,14 @@ describe("CLI", () => {
           despair: 0,
           lightSide: 0,
           darkSide: 0,
-          hints: [
-            "1 Advantage - Recover one strain",
-          ],
+          hints: ["1 Advantage - Recover one strain"],
         },
       };
 
       const formatted = formatResult(result);
-      expect(formatted).toBe("1 Advantage(s)\n\nPossible actions:\n • 1 Advantage - Recover one strain");
+      expect(formatted).toBe(
+        "1 Advantage(s)\n\nPossible actions:\n • 1 Advantage - Recover one strain",
+      );
     });
 
     test("formats successes and failures correctly", () => {

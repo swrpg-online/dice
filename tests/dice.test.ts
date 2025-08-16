@@ -1357,11 +1357,11 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // With 2 ability dice rolling high, we should get advantages
       expect(result.summary.hints).toBeDefined();
       expect(Array.isArray(result.summary.hints)).toBe(true);
-      
+
       cleanup();
     });
 
@@ -1374,13 +1374,13 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // Should show hints that cost "2 Advantages OR 1 Triumph"
       if (result.summary.advantages >= 2) {
         const hintsText = result.summary.hints?.join("\n") || "";
         expect(hintsText).toContain("2 Advantages OR 1 Triumph");
       }
-      
+
       cleanup();
     });
 
@@ -1392,7 +1392,7 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // If we got a triumph, we should see hints that require "X Advantages OR 1 Triumph"
       if (result.summary.triumphs >= 1) {
         const hintsText = result.summary.hints?.join("\n") || "";
@@ -1400,7 +1400,7 @@ describe("Input Validation and Bounds Checking", () => {
         expect(result.summary.hints).toBeDefined();
         expect(result.summary.hints!.length).toBeGreaterThan(0);
       }
-      
+
       cleanup();
     });
 
@@ -1412,12 +1412,12 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // With minimal results, should have few or no applicable hints
       if (result.summary.advantages === 0 && result.summary.triumphs === 0) {
         expect(result.summary.hints?.length || 0).toBe(0);
       }
-      
+
       cleanup();
     });
 
@@ -1430,13 +1430,13 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result1 = roll(pool1, options);
-      
+
       if (result1.summary.advantages >= 3) {
         const hintsText = result1.summary.hints?.join("\n") || "";
         // Should show hints requiring "3 Advantages OR 1 Triumph"
         expect(hintsText).toContain("3 Advantages OR 1 Triumph");
       }
-      
+
       cleanup1();
 
       // Test with 1 triumph but less than 3 advantages
@@ -1446,13 +1446,13 @@ describe("Input Validation and Bounds Checking", () => {
       };
 
       const result2 = roll(pool2, options);
-      
+
       if (result2.summary.triumphs >= 1 && result2.summary.advantages < 3) {
         const hintsText = result2.summary.hints?.join("\n") || "";
         // Should still show hints requiring "3 Advantages OR 1 Triumph"
         expect(hintsText).toContain("OR 1 Triumph");
       }
-      
+
       cleanup2();
     });
 
@@ -1464,10 +1464,10 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // Should not crash and should handle 0 values gracefully
       expect(result.summary.hints).toBeDefined();
-      
+
       cleanup();
     });
 
@@ -1480,19 +1480,19 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // If we have threats or despairs, should show relevant hints
       if (result.summary.threats > 0 || result.summary.despair > 0) {
         expect(result.summary.hints).toBeDefined();
         expect(result.summary.hints!.length).toBeGreaterThan(0);
-        
+
         const hintsText = result.summary.hints?.join("\n") || "";
         if (result.summary.threats >= 1) {
           // Should include hints that cost threats
           expect(hintsText.toLowerCase()).toContain("threat");
         }
       }
-      
+
       cleanup();
     });
 
@@ -1505,23 +1505,23 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       if (result.summary.hints && result.summary.hints.length > 0) {
         // Check that OR is in uppercase for clarity in the cost portion
-        const orHints = result.summary.hints.filter(h => {
+        const orHints = result.summary.hints.filter((h) => {
           const costPart = h.split(" - ")[0];
           return costPart.includes(" OR ");
         });
         expect(orHints.length).toBeGreaterThan(0);
-        
+
         // The cost portion should not have lowercase "or"
-        const lowercaseOrInCost = result.summary.hints.filter(h => {
+        const lowercaseOrInCost = result.summary.hints.filter((h) => {
           const costPart = h.split(" - ")[0];
           return costPart.includes(" or ");
         });
         expect(lowercaseOrInCost.length).toBe(0);
       }
-      
+
       cleanup();
     });
 
@@ -1535,15 +1535,15 @@ describe("Input Validation and Bounds Checking", () => {
       const options: RollOptions = { hints: true };
 
       const result = roll(pool, options);
-      
+
       // Should handle mixed positive and negative results
       if (result.summary.hints) {
         // Each hint should only appear if player can afford it
-        result.summary.hints.forEach(hint => {
+        result.summary.hints.forEach((hint) => {
           // Extract cost from hint text (format: "X Symbol OR Y Symbol - description")
           const costPart = hint.split(" - ")[0];
           expect(costPart).toBeTruthy();
-          
+
           // Should have proper formatting
           if (costPart.includes(" OR ")) {
             expect(costPart).toMatch(/\d+ \w+ OR \d+ \w+/);
@@ -1552,7 +1552,7 @@ describe("Input Validation and Bounds Checking", () => {
           }
         });
       }
-      
+
       cleanup();
     });
   });
@@ -1577,7 +1577,7 @@ describe("Input Validation and Bounds Checking", () => {
       expect(result.results).toHaveLength(7); // Total dice count
 
       // Verify each die result has required properties
-      result.results.forEach(dieResult => {
+      result.results.forEach((dieResult) => {
         expect(dieResult).toHaveProperty("type");
         expect(dieResult).toHaveProperty("roll");
         expect(dieResult).toHaveProperty("result");
@@ -1595,8 +1595,12 @@ describe("Input Validation and Bounds Checking", () => {
       expect(result.summary).toHaveProperty("hints");
 
       // If we have resources, we should have hints
-      if (result.summary.advantages > 0 || result.summary.triumphs > 0 || 
-          result.summary.threats > 0 || result.summary.despair > 0) {
+      if (
+        result.summary.advantages > 0 ||
+        result.summary.triumphs > 0 ||
+        result.summary.threats > 0 ||
+        result.summary.despair > 0
+      ) {
         expect(result.summary.hints).toBeDefined();
         expect(Array.isArray(result.summary.hints)).toBe(true);
       }
@@ -1614,16 +1618,16 @@ describe("Input Validation and Bounds Checking", () => {
       const result = roll(pool, options);
 
       if (result.summary.hints && result.summary.hints.length > 0) {
-        result.summary.hints.forEach(hint => {
+        result.summary.hints.forEach((hint) => {
           // Each hint should have format: "Cost - Description"
           expect(hint).toContain(" - ");
           const [cost, description] = hint.split(" - ");
           expect(cost).toBeTruthy();
           expect(description).toBeTruthy();
-          
+
           // Cost should mention a symbol
           expect(cost).toMatch(/(Advantage|Triumph|Threat|Despair)/);
-          
+
           // Description should be non-empty
           expect(description.length).toBeGreaterThan(10);
         });
@@ -1677,14 +1681,14 @@ describe("Input Validation and Bounds Checking", () => {
         expect(result.summary.hints).toBeDefined();
         if (result.summary.hints) {
           // Should only show hints that cost exactly 1 advantage (or 1 advantage OR 1 triumph)
-          result.summary.hints.forEach(hint => {
+          result.summary.hints.forEach((hint) => {
             const costPart = hint.split(" - ")[0];
             expect(costPart).toMatch(/1 Advantage/);
           });
-          
+
           // Should not show hints requiring 2+ advantages
-          const twoAdvantageHints = result.summary.hints.filter(h => 
-            h.includes("2 Advantages") && !h.includes("OR")
+          const twoAdvantageHints = result.summary.hints.filter(
+            (h) => h.includes("2 Advantages") && !h.includes("OR"),
           );
           expect(twoAdvantageHints.length).toBe(0);
         }
@@ -1712,17 +1716,19 @@ describe("Input Validation and Bounds Checking", () => {
       expect(result.results).toHaveLength(13);
 
       // Verify dice types
-      const diceTypes = result.results.map(r => r.type);
-      expect(diceTypes.filter(t => t === "boost")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "ability")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "proficiency")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "setback")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "difficulty")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "challenge")).toHaveLength(2);
-      expect(diceTypes.filter(t => t === "force")).toHaveLength(1);
+      const diceTypes = result.results.map((r) => r.type);
+      expect(diceTypes.filter((t) => t === "boost")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "ability")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "proficiency")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "setback")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "difficulty")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "challenge")).toHaveLength(2);
+      expect(diceTypes.filter((t) => t === "force")).toHaveLength(1);
 
       // Force die should contribute to light/dark side
-      expect(result.summary.lightSide + result.summary.darkSide).toBeGreaterThanOrEqual(0);
+      expect(
+        result.summary.lightSide + result.summary.darkSide,
+      ).toBeGreaterThanOrEqual(0);
 
       cleanup();
     });
@@ -1733,7 +1739,7 @@ describe("Input Validation and Bounds Checking", () => {
         abilityDice: 150, // Will be capped
         proficiencyDice: 150, // Will be capped
       };
-      const options: RollOptions = { 
+      const options: RollOptions = {
         hints: true,
         maxDicePerType: 10,
         maxTotalDice: 15,
@@ -1743,7 +1749,7 @@ describe("Input Validation and Bounds Checking", () => {
       expect(() => roll(pool, options)).toThrow(/Total dice count/);
 
       // Try with valid limits
-      const validOptions: RollOptions = { 
+      const validOptions: RollOptions = {
         hints: true,
         maxDicePerType: 10,
         maxTotalDice: 20,
