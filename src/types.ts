@@ -55,4 +55,20 @@ export type Symbol = keyof typeof SYMBOLS;
 
 export type RollOptions = {
   hints?: boolean;
+  /**
+   * Maximum number of dice allowed per die type.
+   * Default: 100
+   */
+  maxDicePerType?: number;
+  /**
+   * Maximum total number of dice allowed in a single roll.
+   * Default: 500
+   */
+  maxTotalDice?: number;
+  /**
+   * Whether to throw an error when dice limits are exceeded.
+   * If false, dice counts will be silently capped to the maximum.
+   * Default: false
+   */
+  throwOnLimitExceeded?: boolean;
 };
