@@ -1556,4 +1556,208 @@ describe("Input Validation and Bounds Checking", () => {
       cleanup();
     });
   });
+
+  describe("Full Integration Tests with Hints", () => {
+    test("complete roll workflow with hints enabled", () => {
+      const cleanup = mockMathRandom(0.6);
+      const pool: DicePool = {
+        abilityDice: 2,
+        proficiencyDice: 1,
+        boostDice: 1,
+        difficultyDice: 2,
+        setBackDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+
+      // Verify structure
+      expect(result).toHaveProperty("results");
+      expect(result).toHaveProperty("summary");
+      expect(result.results).toHaveLength(7); // Total dice count
+
+      // Verify each die result has required properties
+      result.results.forEach(dieResult => {
+        expect(dieResult).toHaveProperty("type");
+        expect(dieResult).toHaveProperty("roll");
+        expect(dieResult).toHaveProperty("result");
+        expect(typeof dieResult.roll).toBe("number");
+        expect(dieResult.roll).toBeGreaterThanOrEqual(1);
+      });
+
+      // Verify summary structure
+      expect(result.summary).toHaveProperty("successes");
+      expect(result.summary).toHaveProperty("failures");
+      expect(result.summary).toHaveProperty("advantages");
+      expect(result.summary).toHaveProperty("threats");
+      expect(result.summary).toHaveProperty("triumphs");
+      expect(result.summary).toHaveProperty("despair");
+      expect(result.summary).toHaveProperty("hints");
+
+      // If we have resources, we should have hints
+      if (result.summary.advantages > 0 || result.summary.triumphs > 0 || 
+          result.summary.threats > 0 || result.summary.despair > 0) {
+        expect(result.summary.hints).toBeDefined();
+        expect(Array.isArray(result.summary.hints)).toBe(true);
+      }
+
+      cleanup();
+    });
+
+    test("verifies hint text format in integration", () => {
+      const cleanup = mockMathRandom(0.8);
+      const pool: DicePool = {
+        proficiencyDice: 3, // High chance of advantages/triumphs
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+
+      if (result.summary.hints && result.summary.hints.length > 0) {
+        result.summary.hints.forEach(hint => {
+          // Each hint should have format: "Cost - Description"
+          expect(hint).toContain(" - ");
+          const [cost, description] = hint.split(" - ");
+          expect(cost).toBeTruthy();
+          expect(description).toBeTruthy();
+          
+          // Cost should mention a symbol
+          expect(cost).toMatch(/(Advantage|Triumph|Threat|Despair)/);
+          
+          // Description should be non-empty
+          expect(description.length).toBeGreaterThan(10);
+        });
+      }
+
+      cleanup();
+    });
+
+    test("no hints when hints option is false", () => {
+      const cleanup = mockMathRandom(0.8);
+      const pool: DicePool = {
+        proficiencyDice: 3,
+        abilityDice: 2,
+      };
+      const options: RollOptions = { hints: false };
+
+      const result = roll(pool, options);
+
+      // Should not have hints even with advantages/triumphs
+      expect(result.summary.hints).toBeUndefined();
+
+      cleanup();
+    });
+
+    test("no hints when hints option is undefined", () => {
+      const cleanup = mockMathRandom(0.8);
+      const pool: DicePool = {
+        proficiencyDice: 3,
+        abilityDice: 2,
+      };
+
+      const result = roll(pool); // No options passed
+
+      // Should not have hints by default
+      expect(result.summary.hints).toBeUndefined();
+
+      cleanup();
+    });
+
+    test("hints correctly filtered for exact resource matches", () => {
+      // Mock to get exactly 1 advantage
+      const cleanup = mockMathRandom(0.125); // Should give 1 advantage on ability die
+      const pool: DicePool = {
+        abilityDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+
+      if (result.summary.advantages === 1 && result.summary.triumphs === 0) {
+        expect(result.summary.hints).toBeDefined();
+        if (result.summary.hints) {
+          // Should only show hints that cost exactly 1 advantage (or 1 advantage OR 1 triumph)
+          result.summary.hints.forEach(hint => {
+            const costPart = hint.split(" - ")[0];
+            expect(costPart).toMatch(/1 Advantage/);
+          });
+          
+          // Should not show hints requiring 2+ advantages
+          const twoAdvantageHints = result.summary.hints.filter(h => 
+            h.includes("2 Advantages") && !h.includes("OR")
+          );
+          expect(twoAdvantageHints.length).toBe(0);
+        }
+      }
+
+      cleanup();
+    });
+
+    test("comprehensive roll with all dice types and hints", () => {
+      const cleanup = mockMathRandom(0.5);
+      const pool: DicePool = {
+        boostDice: 2,
+        abilityDice: 2,
+        proficiencyDice: 2,
+        setBackDice: 2,
+        difficultyDice: 2,
+        challengeDice: 2,
+        forceDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+
+      // Verify all dice were rolled
+      expect(result.results).toHaveLength(13);
+
+      // Verify dice types
+      const diceTypes = result.results.map(r => r.type);
+      expect(diceTypes.filter(t => t === "boost")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "ability")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "proficiency")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "setback")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "difficulty")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "challenge")).toHaveLength(2);
+      expect(diceTypes.filter(t => t === "force")).toHaveLength(1);
+
+      // Force die should contribute to light/dark side
+      expect(result.summary.lightSide + result.summary.darkSide).toBeGreaterThanOrEqual(0);
+
+      cleanup();
+    });
+
+    test("integration with dice limits and hints", () => {
+      const cleanup = mockMathRandom(0.7);
+      const pool: DicePool = {
+        abilityDice: 150, // Will be capped
+        proficiencyDice: 150, // Will be capped
+      };
+      const options: RollOptions = { 
+        hints: true,
+        maxDicePerType: 10,
+        maxTotalDice: 15,
+      };
+
+      // Should throw due to total limit
+      expect(() => roll(pool, options)).toThrow(/Total dice count/);
+
+      // Try with valid limits
+      const validOptions: RollOptions = { 
+        hints: true,
+        maxDicePerType: 10,
+        maxTotalDice: 20,
+      };
+
+      const result = roll(pool, validOptions);
+      expect(result.results).toHaveLength(20); // 10 + 10
+
+      // Should still process hints correctly
+      if (result.summary.advantages > 0 || result.summary.triumphs > 0) {
+        expect(result.summary.hints).toBeDefined();
+      }
+
+      cleanup();
+    });
+  });
 });
