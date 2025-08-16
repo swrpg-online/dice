@@ -718,11 +718,14 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
   if (options?.hints) {
     const applicableHints = hints.filter((hint) => {
       const { cost } = hint;
+      // For OR conditions: at least one option must be fully satisfied
+      // Each entry in cost represents an alternative way to pay for the hint
       return Object.entries(cost).some(([symbol, required]) => {
         const summaryKey = (symbol.toLowerCase() + "s") as keyof typeof summary;
         const value = summary[summaryKey];
         if (typeof value !== "number") return false;
-        return required <= value;
+        // Check if we have enough of this symbol type to afford the hint
+        return required !== undefined && required > 0 && value >= required;
       });
     });
     summary.hints = applicableHints.map(

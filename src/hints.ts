@@ -279,8 +279,14 @@ export function hintCostDisplayText(hint: Hint): string {
   const parts = Object.entries(hint.cost)
     .filter(([_, count]) => count && count > 0)
     .map(([symbol, count]) => {
-      const symbolName = symbol.charAt(0) + symbol.toLowerCase().slice(1);
-      return `${count} ${symbolName}${count > 1 ? "(s)" : ""}`;
+      const symbolName = symbol.charAt(0).toUpperCase() + symbol.toLowerCase().slice(1);
+      const plural = count > 1 ? "s" : "";
+      return `${count} ${symbolName}${plural}`;
     });
-  return parts.length > 0 ? parts.join(" or ") : "No cost";
+  
+  // Use "OR" in uppercase for clarity when multiple options exist
+  if (parts.length > 1) {
+    return parts.join(" OR ");
+  }
+  return parts.length > 0 ? parts[0] : "No cost";
 }
