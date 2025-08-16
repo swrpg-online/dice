@@ -15,12 +15,41 @@ export function parseDiceNotation(input: string): DicePool {
     forceDice: 0,
   };
 
-  const parts = input.toLowerCase().trim().split(" ");
+  const warnings: string[] = [];
+  const parts = input
+    .toLowerCase()
+    .trim()
+    .split(" ")
+    .filter((p) => p.length > 0);
 
   for (const part of parts) {
     const count = parseInt(part);
+
+    // Check if parseInt returned NaN
+    if (isNaN(count)) {
+      warnings.push(`Invalid dice notation: "${part}" - number not found`);
+      continue;
+    }
+
+    // Check for non-integer values
+    if (part.includes(".") || part.includes(",")) {
+      warnings.push(
+        `Invalid dice notation: "${part}" - dice count must be a whole number`,
+      );
+      continue;
+    }
+
     const color = part.slice(String(count).length).toLowerCase();
 
+    // Skip if no color specified
+    if (!color) {
+      warnings.push(
+        `Invalid dice notation: "${part}" - no dice color specified`,
+      );
+      continue;
+    }
+
+    let recognized = true;
     switch (color) {
       // y/pro = Yellow / Proficiency
       case "y":
@@ -77,7 +106,15 @@ export function parseDiceNotation(input: string): DicePool {
       case "f":
         pool.forceDice = count;
         break;
+      default:
+        recognized = false;
+        warnings.push(`Invalid dice color: "${color}" in "${part}"`);
     }
+  }
+
+  // Print warnings to stderr
+  if (warnings.length > 0) {
+    warnings.forEach((warning) => console.error(`Warning: ${warning}`));
   }
 
   return pool;
@@ -133,6 +170,18 @@ export const main = () => {
   }
 
   const pool = parseDiceNotation(diceNotation);
+
+  // Check if the pool is empty (all zeros) which might indicate invalid input
+  const hasAnyDice = Object.values(pool).some((count) => count > 0);
+  if (!hasAnyDice) {
+    console.error("\nError: No valid dice found in the notation.");
+    console.error(
+      "Please check your input and ensure it follows the format: <count><color>",
+    );
+    console.error("Example: '2y 1g' for 2 yellow and 1 green dice\n");
+    process.exit(1);
+  }
+
   const result = roll(pool, { hints: showHints });
   console.log(formatResult(result));
 };

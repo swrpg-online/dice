@@ -294,6 +294,16 @@ describe("CLI Functions", () => {
 });
 
 describe("Error handling", () => {
+  let consoleErrorSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
+  });
+
   test("handles invalid dice notation", () => {
     expect(parseDiceNotation("invalid")).toEqual({
       boostDice: 0,
@@ -304,7 +314,11 @@ describe("Error handling", () => {
       challengeDice: 0,
       forceDice: 0,
     });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "invalid" - number not found',
+    );
   });
+
   test("handles malformed dice numbers", () => {
     expect(parseDiceNotation("ayg")).toEqual({
       boostDice: 0,
@@ -315,6 +329,192 @@ describe("Error handling", () => {
       challengeDice: 0,
       forceDice: 0,
     });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "ayg" - number not found',
+    );
+  });
+
+  test("handles invalid numbers like 'abc'", () => {
+    expect(parseDiceNotation("abc")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "abc" - number not found',
+    );
+  });
+
+  test("handles decimal numbers like '2.5g'", () => {
+    expect(parseDiceNotation("2.5g")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "2.5g" - dice count must be a whole number',
+    );
+  });
+
+  test("handles comma numbers like '2,5g'", () => {
+    expect(parseDiceNotation("2,5g")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "2,5g" - dice count must be a whole number',
+    );
+  });
+
+  test("handles invalid dice colors like '2x' or '3zz'", () => {
+    expect(parseDiceNotation("2x 3zz")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice color: "x" in "2x"',
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice color: "zz" in "3zz"',
+    );
+  });
+
+  test("handles numbers without dice color like '5'", () => {
+    expect(parseDiceNotation("5")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "5" - no dice color specified',
+    );
+  });
+
+  test("handles mixed valid and invalid notation", () => {
+    expect(parseDiceNotation("2g invalid 1p 3.5b 1r 2x")).toEqual({
+      boostDice: 0,
+      abilityDice: 2,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 1,
+      challengeDice: 1,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "invalid" - number not found',
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "3.5b" - dice count must be a whole number',
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice color: "x" in "2x"',
+    );
+  });
+
+  test("handles whitespace-only input", () => {
+    expect(parseDiceNotation("   ")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  test("handles multiple spaces between valid dice", () => {
+    expect(parseDiceNotation("1g    2p")).toEqual({
+      boostDice: 0,
+      abilityDice: 1,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 2,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  test("handles special characters in notation", () => {
+    expect(parseDiceNotation("@#$% 1g !@#")).toEqual({
+      boostDice: 0,
+      abilityDice: 1,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "@#$%" - number not found',
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "!@#" - number not found',
+    );
+  });
+
+  test("handles negative numbers", () => {
+    expect(parseDiceNotation("-2g")).toEqual({
+      boostDice: 0,
+      abilityDice: -2,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    // Negative numbers are technically parsed but may not make sense semantically
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  test("handles zero dice counts", () => {
+    expect(parseDiceNotation("0g 0p")).toEqual({
+      boostDice: 0,
+      abilityDice: 0,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  test("handles very large numbers", () => {
+    expect(parseDiceNotation("999999g")).toEqual({
+      boostDice: 0,
+      abilityDice: 999999,
+      proficiencyDice: 0,
+      setBackDice: 0,
+      difficultyDice: 0,
+      challengeDice: 0,
+      forceDice: 0,
+    });
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 });
 
@@ -322,6 +522,10 @@ describe("CLI main function", () => {
   // Mock console.log
   const mockConsoleLog = jest
     .spyOn(console, "log")
+    .mockImplementation(() => {});
+  // Mock console.error
+  const mockConsoleError = jest
+    .spyOn(console, "error")
     .mockImplementation(() => {});
   // Mock process.exit
   const mockExit = jest.spyOn(process, "exit").mockImplementation((number) => {
@@ -336,12 +540,14 @@ describe("CLI main function", () => {
 
   afterEach(() => {
     mockConsoleLog.mockClear();
+    mockConsoleError.mockClear();
     mockExit.mockClear();
   });
 
   afterAll(() => {
     process.argv = originalArgv;
     mockConsoleLog.mockRestore();
+    mockConsoleError.mockRestore();
     mockExit.mockRestore();
   });
 
@@ -355,6 +561,26 @@ describe("CLI main function", () => {
   test("processes valid dice notation", () => {
     process.argv = ["node", "script.js", "1y", "2g"];
     expect(() => main()).not.toThrow();
+    expect(mockConsoleLog).toHaveBeenCalled();
+  });
+
+  test("shows error message for completely invalid notation", () => {
+    process.argv = ["node", "script.js", "invalid", "xyz"];
+    expect(() => main()).toThrow("process.exit: 1");
+    expect(mockConsoleError).toHaveBeenCalledWith(
+      expect.stringContaining("Error: No valid dice found"),
+    );
+  });
+
+  test("processes mixed valid and invalid notation", () => {
+    process.argv = ["node", "script.js", "1y", "invalid", "2g"];
+    // This should still work since it has some valid dice
+    expect(() => main()).not.toThrow();
+    // Check that warning was logged for invalid notation
+    expect(mockConsoleError).toHaveBeenCalledWith(
+      'Warning: Invalid dice notation: "invalid" - number not found',
+    );
+    // Check that the result was still displayed
     expect(mockConsoleLog).toHaveBeenCalled();
   });
 });
