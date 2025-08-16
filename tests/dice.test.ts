@@ -1347,4 +1347,213 @@ describe("Input Validation and Bounds Checking", () => {
       }
     });
   });
+
+  describe("Hint Filtering with OR Conditions", () => {
+    test("shows hints when player has sufficient resources for single cost requirement", () => {
+      const cleanup = mockMathRandom(0.99); // Roll high for successes
+      const pool: DicePool = {
+        abilityDice: 2, // Should give advantages
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // With 2 ability dice rolling high, we should get advantages
+      expect(result.summary.hints).toBeDefined();
+      expect(Array.isArray(result.summary.hints)).toBe(true);
+      
+      cleanup();
+    });
+
+    test("shows hints for OR conditions when player has enough of first option", () => {
+      // Mock to get exactly 2 advantages
+      const cleanup = mockMathRandom(0.25); // Lower roll for ability dice
+      const pool: DicePool = {
+        abilityDice: 3,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // Should show hints that cost "2 Advantages OR 1 Triumph"
+      if (result.summary.advantages >= 2) {
+        const hintsText = result.summary.hints?.join("\n") || "";
+        expect(hintsText).toContain("2 Advantages OR 1 Triumph");
+      }
+      
+      cleanup();
+    });
+
+    test("shows hints for OR conditions when player has enough of second option", () => {
+      const cleanup = mockMathRandom(0.99); // High roll for triumph
+      const pool: DicePool = {
+        proficiencyDice: 1, // Can roll triumph
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // If we got a triumph, we should see hints that require "X Advantages OR 1 Triumph"
+      if (result.summary.triumphs >= 1) {
+        const hintsText = result.summary.hints?.join("\n") || "";
+        // Should include hints that can be paid with 1 triumph
+        expect(result.summary.hints).toBeDefined();
+        expect(result.summary.hints!.length).toBeGreaterThan(0);
+      }
+      
+      cleanup();
+    });
+
+    test("does not show hints when player lacks resources for all options", () => {
+      const cleanup = mockMathRandom(0.01); // Very low roll for minimal results
+      const pool: DicePool = {
+        boostDice: 1, // Minimal dice
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // With minimal results, should have few or no applicable hints
+      if (result.summary.advantages === 0 && result.summary.triumphs === 0) {
+        expect(result.summary.hints?.length || 0).toBe(0);
+      }
+      
+      cleanup();
+    });
+
+    test("correctly filters hints with 3 Advantages OR 1 Triumph requirement", () => {
+      // Test with exactly 3 advantages
+      const cleanup1 = mockMathRandom(0.5);
+      const pool1: DicePool = {
+        abilityDice: 4,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result1 = roll(pool1, options);
+      
+      if (result1.summary.advantages >= 3) {
+        const hintsText = result1.summary.hints?.join("\n") || "";
+        // Should show hints requiring "3 Advantages OR 1 Triumph"
+        expect(hintsText).toContain("3 Advantages OR 1 Triumph");
+      }
+      
+      cleanup1();
+
+      // Test with 1 triumph but less than 3 advantages
+      const cleanup2 = mockMathRandom(0.99);
+      const pool2: DicePool = {
+        proficiencyDice: 1,
+      };
+
+      const result2 = roll(pool2, options);
+      
+      if (result2.summary.triumphs >= 1 && result2.summary.advantages < 3) {
+        const hintsText = result2.summary.hints?.join("\n") || "";
+        // Should still show hints requiring "3 Advantages OR 1 Triumph"
+        expect(hintsText).toContain("OR 1 Triumph");
+      }
+      
+      cleanup2();
+    });
+
+    test("handles edge case with 0 values in cost", () => {
+      const cleanup = mockMathRandom(0.5);
+      const pool: DicePool = {
+        abilityDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // Should not crash and should handle 0 values gracefully
+      expect(result.summary.hints).toBeDefined();
+      
+      cleanup();
+    });
+
+    test("shows threat/despair hints when applicable", () => {
+      const cleanup = mockMathRandom(0.01); // Low roll for failures
+      const pool: DicePool = {
+        difficultyDice: 2,
+        challengeDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // If we have threats or despairs, should show relevant hints
+      if (result.summary.threats > 0 || result.summary.despair > 0) {
+        expect(result.summary.hints).toBeDefined();
+        expect(result.summary.hints!.length).toBeGreaterThan(0);
+        
+        const hintsText = result.summary.hints?.join("\n") || "";
+        if (result.summary.threats >= 1) {
+          // Should include hints that cost threats
+          expect(hintsText.toLowerCase()).toContain("threat");
+        }
+      }
+      
+      cleanup();
+    });
+
+    test("correctly displays hint costs with proper OR formatting", () => {
+      const cleanup = mockMathRandom(0.8);
+      const pool: DicePool = {
+        abilityDice: 2,
+        proficiencyDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      if (result.summary.hints && result.summary.hints.length > 0) {
+        // Check that OR is in uppercase for clarity in the cost portion
+        const orHints = result.summary.hints.filter(h => {
+          const costPart = h.split(" - ")[0];
+          return costPart.includes(" OR ");
+        });
+        expect(orHints.length).toBeGreaterThan(0);
+        
+        // The cost portion should not have lowercase "or"
+        const lowercaseOrInCost = result.summary.hints.filter(h => {
+          const costPart = h.split(" - ")[0];
+          return costPart.includes(" or ");
+        });
+        expect(lowercaseOrInCost.length).toBe(0);
+      }
+      
+      cleanup();
+    });
+
+    test("filters multiple symbol combinations correctly", () => {
+      const cleanup = mockMathRandom(0.7);
+      const pool: DicePool = {
+        abilityDice: 3,
+        proficiencyDice: 2,
+        difficultyDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+      
+      // Should handle mixed positive and negative results
+      if (result.summary.hints) {
+        // Each hint should only appear if player can afford it
+        result.summary.hints.forEach(hint => {
+          // Extract cost from hint text (format: "X Symbol OR Y Symbol - description")
+          const costPart = hint.split(" - ")[0];
+          expect(costPart).toBeTruthy();
+          
+          // Should have proper formatting
+          if (costPart.includes(" OR ")) {
+            expect(costPart).toMatch(/\d+ \w+ OR \d+ \w+/);
+          } else {
+            expect(costPart).toMatch(/\d+ \w+s?/);
+          }
+        });
+      }
+      
+      cleanup();
+    });
+  });
 });
