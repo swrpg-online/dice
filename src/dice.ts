@@ -7,6 +7,10 @@ import {
   RollOptions,
 } from "./types";
 
+// Default dice limits for performance and security
+export const DEFAULT_MAX_DICE_PER_TYPE = 100;
+export const DEFAULT_MAX_TOTAL_DICE = 500;
+
 const rollDie = (sides: number): number =>
   Math.floor(Math.random() * sides) + 1;
 
@@ -551,6 +555,18 @@ const sumResults = (
   return result;
 };
 
+/**
+ * Rolls a dice pool and returns the results.
+ *
+ * @param pool - The dice pool to roll
+ * @param options - Optional roll configuration including dice limits
+ * @returns The roll results with detailed die information and summary
+ * @throws {Error} If dice counts exceed configured limits
+ *
+ * Default limits:
+ * - Max dice per type: 100 (configurable via options.maxDicePerType)
+ * - Max total dice: 500 (configurable via options.maxTotalDice)
+ */
 export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
   const boostCount = pool.boostDice ?? 0;
   const abilityCount = pool.abilityDice ?? 0;
@@ -560,16 +576,70 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
   const challengeCount = pool.challengeDice ?? 0;
   const forceCount = pool.forceDice ?? 0;
 
-  // Ensure all dice counts are non-negative
+  // Get limits from options or use defaults
+  const maxDicePerType = options?.maxDicePerType ?? DEFAULT_MAX_DICE_PER_TYPE;
+  const maxTotalDice = options?.maxTotalDice ?? DEFAULT_MAX_TOTAL_DICE;
+
+  // Ensure all dice counts are non-negative and apply per-type limits
   const sanitizedPool = {
-    boostDice: Math.max(0, boostCount),
-    abilityDice: Math.max(0, abilityCount),
-    proficiencyDice: Math.max(0, proficiencyCount),
-    setBackDice: Math.max(0, setBackCount),
-    difficultyDice: Math.max(0, difficultyCount),
-    challengeDice: Math.max(0, challengeCount),
-    forceDice: Math.max(0, forceCount),
+    boostDice: Math.max(0, Math.min(boostCount, maxDicePerType)),
+    abilityDice: Math.max(0, Math.min(abilityCount, maxDicePerType)),
+    proficiencyDice: Math.max(0, Math.min(proficiencyCount, maxDicePerType)),
+    setBackDice: Math.max(0, Math.min(setBackCount, maxDicePerType)),
+    difficultyDice: Math.max(0, Math.min(difficultyCount, maxDicePerType)),
+    challengeDice: Math.max(0, Math.min(challengeCount, maxDicePerType)),
+    forceDice: Math.max(0, Math.min(forceCount, maxDicePerType)),
   };
+
+  // Check if any dice counts exceeded the per-type limit
+  const exceedsPerTypeLimit =
+    boostCount > maxDicePerType ||
+    abilityCount > maxDicePerType ||
+    proficiencyCount > maxDicePerType ||
+    setBackCount > maxDicePerType ||
+    difficultyCount > maxDicePerType ||
+    challengeCount > maxDicePerType ||
+    forceCount > maxDicePerType;
+
+  // Calculate total dice count
+  const totalDice =
+    sanitizedPool.boostDice +
+    sanitizedPool.abilityDice +
+    sanitizedPool.proficiencyDice +
+    sanitizedPool.setBackDice +
+    sanitizedPool.difficultyDice +
+    sanitizedPool.challengeDice +
+    sanitizedPool.forceDice;
+
+  // Check total dice limit
+  if (totalDice > maxTotalDice) {
+    throw new Error(
+      `Total dice count (${totalDice}) exceeds maximum allowed (${maxTotalDice}). ` +
+        `Please reduce the number of dice in your pool.`,
+    );
+  }
+
+  // Warn if per-type limits were exceeded (but continue with capped values)
+  if (exceedsPerTypeLimit && options?.throwOnLimitExceeded) {
+    const exceeded = [];
+    if (boostCount > maxDicePerType) exceeded.push(`boost: ${boostCount}`);
+    if (abilityCount > maxDicePerType)
+      exceeded.push(`ability: ${abilityCount}`);
+    if (proficiencyCount > maxDicePerType)
+      exceeded.push(`proficiency: ${proficiencyCount}`);
+    if (setBackCount > maxDicePerType)
+      exceeded.push(`setback: ${setBackCount}`);
+    if (difficultyCount > maxDicePerType)
+      exceeded.push(`difficulty: ${difficultyCount}`);
+    if (challengeCount > maxDicePerType)
+      exceeded.push(`challenge: ${challengeCount}`);
+    if (forceCount > maxDicePerType) exceeded.push(`force: ${forceCount}`);
+
+    throw new Error(
+      `Dice counts exceed per-type limit (${maxDicePerType}): ${exceeded.join(", ")}. ` +
+        `Dice counts have been capped to the maximum.`,
+    );
+  }
 
   const detailedResults: DetailedDieResult[] = [];
 
