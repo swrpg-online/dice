@@ -24,7 +24,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // The ability die should contribute its own successes plus the automatic ones
       expect(result.summary.successes).toBeGreaterThanOrEqual(2);
       cleanup();
@@ -38,7 +38,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Failures should be added and netted against successes
       expect(result.summary.failures).toBeGreaterThanOrEqual(0);
       cleanup();
@@ -52,7 +52,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have at least the automatic advantages
       expect(result.summary.advantages).toBeGreaterThanOrEqual(3);
       cleanup();
@@ -66,7 +66,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Threats should be netted against advantages
       expect(result.summary.threats).toBeGreaterThanOrEqual(0);
       cleanup();
@@ -80,7 +80,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       expect(result.summary.triumphs).toBe(1);
       cleanup();
     });
@@ -93,7 +93,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       expect(result.summary.despair).toBe(2);
       cleanup();
     });
@@ -106,7 +106,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have net 2 successes (5 - 3)
       expect(result.summary.successes).toBe(2);
       expect(result.summary.failures).toBe(0);
@@ -121,7 +121,7 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have net 2 threats (6 - 4)
       expect(result.summary.advantages).toBe(0);
       expect(result.summary.threats).toBe(2);
@@ -138,11 +138,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 2 proficiency dice and 1 ability die
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(proficiencyCount).toBe(2);
       expect(abilityCount).toBe(1);
       cleanup();
@@ -155,10 +159,12 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 2 proficiency dice
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+
       expect(proficiencyCount).toBe(2);
       cleanup();
     });
@@ -171,11 +177,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 1 challenge die and 1 difficulty die
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       expect(challengeCount).toBe(1);
       expect(difficultyCount).toBe(1);
       cleanup();
@@ -188,10 +198,12 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 3 challenge dice
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+
       expect(challengeCount).toBe(3);
       cleanup();
     });
@@ -206,12 +218,20 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       expect(proficiencyCount).toBe(3); // 2 upgraded + 1 added
       expect(abilityCount).toBe(0); // All upgraded
       expect(challengeCount).toBe(2); // 1 upgraded + 1 added
@@ -229,11 +249,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 1 proficiency die and 2 ability dice
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(proficiencyCount).toBe(1);
       expect(abilityCount).toBe(2);
       cleanup();
@@ -247,11 +271,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 0 proficiency dice and 1 ability die
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(proficiencyCount).toBe(0);
       expect(abilityCount).toBe(1);
       cleanup();
@@ -265,11 +293,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 1 challenge die and 1 difficulty die
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       expect(challengeCount).toBe(1);
       expect(difficultyCount).toBe(1);
       cleanup();
@@ -283,11 +315,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 0 challenge dice and 2 difficulty dice
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       expect(challengeCount).toBe(0);
       expect(difficultyCount).toBe(2);
       cleanup();
@@ -302,10 +338,12 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should only have the 2 ability dice
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(result.results.length).toBe(2);
       expect(abilityCount).toBe(2);
       cleanup();
@@ -322,11 +360,15 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Should have 1 proficiency die and 2 ability dice
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(proficiencyCount).toBe(1);
       expect(abilityCount).toBe(2);
       cleanup();
@@ -346,12 +388,20 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       // After upgrades: 4 proficiency, 0 ability, 2 challenge, 1 difficulty
       // After downgrades: 2 proficiency, 2 ability, 0 challenge, 3 difficulty
       expect(proficiencyCount).toBe(2);
@@ -374,14 +424,18 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Check dice configuration
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+
       expect(proficiencyCount).toBe(1);
       expect(abilityCount).toBe(1);
-      
+
       // Check that automatic symbols are applied
       expect(result.summary.successes).toBeGreaterThanOrEqual(3);
       expect(result.summary.advantages).toBeGreaterThanOrEqual(2);
@@ -406,18 +460,26 @@ describe("Dice Pool Modifiers", () => {
       };
 
       const result = roll(pool);
-      
+
       // Verify dice modifications were applied
-      const proficiencyCount = result.results.filter(r => r.type === "proficiency").length;
-      const abilityCount = result.results.filter(r => r.type === "ability").length;
-      const challengeCount = result.results.filter(r => r.type === "challenge").length;
-      const difficultyCount = result.results.filter(r => r.type === "difficulty").length;
-      
+      const proficiencyCount = result.results.filter(
+        (r) => r.type === "proficiency",
+      ).length;
+      const abilityCount = result.results.filter(
+        (r) => r.type === "ability",
+      ).length;
+      const challengeCount = result.results.filter(
+        (r) => r.type === "challenge",
+      ).length;
+      const difficultyCount = result.results.filter(
+        (r) => r.type === "difficulty",
+      ).length;
+
       expect(proficiencyCount).toBe(1);
       expect(abilityCount).toBe(1);
       expect(challengeCount).toBe(0); // 1 created, then downgraded
       expect(difficultyCount).toBe(2); // 1 original + 1 downgraded
-      
+
       // Verify automatic symbols are present
       expect(result.summary.triumphs).toBe(1);
       expect(result.summary.despair).toBe(1);

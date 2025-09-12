@@ -105,14 +105,23 @@ export const applyTalentModifiers = (
   modifiers: PoolModifiers,
 ): DicePool => ({
   ...pool,
-  automaticSuccesses: (pool.automaticSuccesses || 0) + (modifiers.automaticSuccesses || 0),
-  automaticFailures: (pool.automaticFailures || 0) + (modifiers.automaticFailures || 0),
-  automaticAdvantages: (pool.automaticAdvantages || 0) + (modifiers.automaticAdvantages || 0),
-  automaticThreats: (pool.automaticThreats || 0) + (modifiers.automaticThreats || 0),
-  automaticTriumphs: (pool.automaticTriumphs || 0) + (modifiers.automaticTriumphs || 0),
-  automaticDespairs: (pool.automaticDespairs || 0) + (modifiers.automaticDespairs || 0),
+  automaticSuccesses:
+    (pool.automaticSuccesses || 0) + (modifiers.automaticSuccesses || 0),
+  automaticFailures:
+    (pool.automaticFailures || 0) + (modifiers.automaticFailures || 0),
+  automaticAdvantages:
+    (pool.automaticAdvantages || 0) + (modifiers.automaticAdvantages || 0),
+  automaticThreats:
+    (pool.automaticThreats || 0) + (modifiers.automaticThreats || 0),
+  automaticTriumphs:
+    (pool.automaticTriumphs || 0) + (modifiers.automaticTriumphs || 0),
+  automaticDespairs:
+    (pool.automaticDespairs || 0) + (modifiers.automaticDespairs || 0),
   upgradeAbility: (pool.upgradeAbility || 0) + (modifiers.upgradeAbility || 0),
-  upgradeDifficulty: (pool.upgradeDifficulty || 0) + (modifiers.upgradeDifficulty || 0),
-  downgradeProficiency: (pool.downgradeProficiency || 0) + (modifiers.downgradeProficiency || 0),
-  downgradeChallenge: (pool.downgradeChallenge || 0) + (modifiers.downgradeChallenge || 0),
+  upgradeDifficulty:
+    (pool.upgradeDifficulty || 0) + (modifiers.upgradeDifficulty || 0),
+  downgradeProficiency:
+    (pool.downgradeProficiency || 0) + (modifiers.downgradeProficiency || 0),
+  downgradeChallenge:
+    (pool.downgradeChallenge || 0) + (modifiers.downgradeChallenge || 0),
 });

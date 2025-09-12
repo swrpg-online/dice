@@ -29,26 +29,46 @@ export function parseDiceNotation(input: string): DicePool {
       const isPositive = part.startsWith("+");
       const modPart = part.slice(1);
       const count = parseInt(modPart);
-      
+
       if (isNaN(count)) {
         // If it starts with + but has no number, skip as invalid modifier
         if (part.startsWith("+")) {
-          warnings.push(`Invalid modifier notation: "${part}" - number not found`);
+          warnings.push(
+            `Invalid modifier notation: "${part}" - number not found`,
+          );
           continue;
         }
         // Otherwise treat as regular dice notation (for negative numbers)
       } else {
         const modifier = modPart.slice(String(count).length).toLowerCase();
-        
+
         // Check if this is actually a modifier (has a known suffix)
-        const knownModifiers = ["s", "success", "f", "failure", "a", "advantage", 
-                                "t", "threat", "tr", "triumph", "d", "despair",
-                                "ua", "upgradeability", "ud", "upgradedifficulty",
-                                "dp", "downgradeproficiency", "dc", "downgradechallenge"];
-        
+        const knownModifiers = [
+          "s",
+          "success",
+          "f",
+          "failure",
+          "a",
+          "advantage",
+          "t",
+          "threat",
+          "tr",
+          "triumph",
+          "d",
+          "despair",
+          "ua",
+          "upgradeability",
+          "ud",
+          "upgradedifficulty",
+          "dp",
+          "downgradeproficiency",
+          "dc",
+          "downgradechallenge",
+        ];
+
         if (knownModifiers.includes(modifier)) {
           const value = isPositive ? count : -count;
-          
+
           switch (modifier) {
             // Automatic symbols
             case "s":
@@ -61,7 +81,8 @@ export function parseDiceNotation(input: string): DicePool {
               break;
             case "a":
             case "advantage":
-              pool.automaticAdvantages = (pool.automaticAdvantages || 0) + value;
+              pool.automaticAdvantages =
+                (pool.automaticAdvantages || 0) + value;
               break;
             case "t":
             case "threat":
@@ -86,7 +107,8 @@ export function parseDiceNotation(input: string): DicePool {
               break;
             case "dp":
             case "downgradeproficiency":
-              pool.downgradeProficiency = (pool.downgradeProficiency || 0) + value;
+              pool.downgradeProficiency =
+                (pool.downgradeProficiency || 0) + value;
               break;
             case "dc":
             case "downgradechallenge":
@@ -102,7 +124,7 @@ export function parseDiceNotation(input: string): DicePool {
         // If it starts with - and has no known modifier suffix, treat as negative dice count
       }
     }
-    
+
     const count = parseInt(part);
 
     // Check if parseInt returned NaN

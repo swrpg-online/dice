@@ -83,14 +83,16 @@ Dice Options:
 Modifier Options (use + or - prefix):
 
 **Automatic Symbols:**
+
 - `+Ns` - Add N automatic successes
-- `+Nf` - Add N automatic failures  
+- `+Nf` - Add N automatic failures
 - `+Na` - Add N automatic advantages
 - `+Nt` - Add N automatic threats
 - `+Ntr` - Add N automatic triumphs
 - `+Nd` - Add N automatic despairs
 
 **Dice Upgrades/Downgrades:**
+
 - `+Nua` - Upgrade N ability dice to proficiency
 - `+Nud` - Upgrade N difficulty dice to challenge
 - `+Ndp` - Downgrade N proficiency dice to ability
@@ -128,9 +130,9 @@ const enhancedResult = roll(enhancedPool);
 
 // Using helper functions
 const basePool = createCombatCheck(3, 1, 1); // 3 ability, 1 proficiency, 1 boost
-const talentBonus = { 
+const talentBonus = {
     automaticSuccesses: 1,
-    upgradeAbility: 1 
+    upgradeAbility: 1
 };
 const modifiedPool = applyTalentModifiers(basePool, talentBonus);
 const finalResult = roll(modifiedPool);

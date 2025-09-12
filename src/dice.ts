@@ -505,67 +505,79 @@ const forceDieResult = (roll: number): DiceResult => {
 /**
  * Applies dice upgrades and downgrades to a pool.
  * Upgrades are applied first, then downgrades.
- * 
+ *
  * @param pool - The dice pool to modify
  * @returns A new dice pool with upgrades/downgrades applied
  */
 const applyDiceModifications = (pool: DicePool): DicePool => {
   const modifiedPool = { ...pool };
-  
+
   // Apply upgrades first (per game rules)
   if (pool.upgradeAbility && pool.upgradeAbility > 0) {
     let upgradesToApply = pool.upgradeAbility;
     const currentAbility = modifiedPool.abilityDice || 0;
-    
+
     // Upgrade existing ability dice to proficiency
     const upgradedDice = Math.min(currentAbility, upgradesToApply);
     modifiedPool.abilityDice = currentAbility - upgradedDice;
-    modifiedPool.proficiencyDice = (modifiedPool.proficiencyDice || 0) + upgradedDice;
+    modifiedPool.proficiencyDice =
+      (modifiedPool.proficiencyDice || 0) + upgradedDice;
     upgradesToApply -= upgradedDice;
-    
+
     // Add remaining upgrades as new proficiency dice
     if (upgradesToApply > 0) {
-      modifiedPool.proficiencyDice = (modifiedPool.proficiencyDice || 0) + upgradesToApply;
+      modifiedPool.proficiencyDice =
+        (modifiedPool.proficiencyDice || 0) + upgradesToApply;
     }
   }
-  
+
   if (pool.upgradeDifficulty && pool.upgradeDifficulty > 0) {
     let upgradesToApply = pool.upgradeDifficulty;
     const currentDifficulty = modifiedPool.difficultyDice || 0;
-    
+
     // Upgrade existing difficulty dice to challenge
     const upgradedDice = Math.min(currentDifficulty, upgradesToApply);
     modifiedPool.difficultyDice = currentDifficulty - upgradedDice;
-    modifiedPool.challengeDice = (modifiedPool.challengeDice || 0) + upgradedDice;
+    modifiedPool.challengeDice =
+      (modifiedPool.challengeDice || 0) + upgradedDice;
     upgradesToApply -= upgradedDice;
-    
+
     // Add remaining upgrades as new challenge dice
     if (upgradesToApply > 0) {
-      modifiedPool.challengeDice = (modifiedPool.challengeDice || 0) + upgradesToApply;
+      modifiedPool.challengeDice =
+        (modifiedPool.challengeDice || 0) + upgradesToApply;
     }
   }
-  
+
   // Apply downgrades after upgrades
   if (pool.downgradeProficiency && pool.downgradeProficiency > 0) {
     const currentProficiency = modifiedPool.proficiencyDice || 0;
-    const downgradesToApply = Math.min(currentProficiency, pool.downgradeProficiency);
-    
+    const downgradesToApply = Math.min(
+      currentProficiency,
+      pool.downgradeProficiency,
+    );
+
     // Downgrade proficiency dice to ability dice
     modifiedPool.proficiencyDice = currentProficiency - downgradesToApply;
-    modifiedPool.abilityDice = (modifiedPool.abilityDice || 0) + downgradesToApply;
+    modifiedPool.abilityDice =
+      (modifiedPool.abilityDice || 0) + downgradesToApply;
     // Excess downgrades are ignored (per requirements)
   }
-  
+
   if (pool.downgradeChallenge && pool.downgradeChallenge > 0) {
     const currentChallenge = modifiedPool.challengeDice || 0;
-    const downgradesToApply = Math.min(currentChallenge, pool.downgradeChallenge);
-    
+    const downgradesToApply = Math.min(
+      currentChallenge,
+      pool.downgradeChallenge,
+    );
+
     // Downgrade challenge dice to difficulty dice
     modifiedPool.challengeDice = currentChallenge - downgradesToApply;
-    modifiedPool.difficultyDice = (modifiedPool.difficultyDice || 0) + downgradesToApply;
+    modifiedPool.difficultyDice =
+      (modifiedPool.difficultyDice || 0) + downgradesToApply;
     // Excess downgrades are ignored (per requirements)
   }
-  
+
   return modifiedPool;
 };
 
@@ -658,7 +670,7 @@ const sumResults = (
 export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
   // Apply dice modifications (upgrades/downgrades)
   const modifiedPool = applyDiceModifications(pool);
-  
+
   const boostCount = modifiedPool.boostDice ?? 0;
   const abilityCount = modifiedPool.abilityDice ?? 0;
   const proficiencyCount = modifiedPool.proficiencyDice ?? 0;
@@ -812,8 +824,12 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
     triumphs: pool.automaticTriumphs,
     despairs: pool.automaticDespairs,
   };
-  
-  const summary = sumResults(detailedResults.map((r) => r.result), automaticSymbols, options);
+
+  const summary = sumResults(
+    detailedResults.map((r) => r.result),
+    automaticSymbols,
+    options,
+  );
 
   if (options?.hints) {
     const applicableHints = hints.filter((hint) => {

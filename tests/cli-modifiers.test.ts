@@ -47,7 +47,9 @@ describe("CLI Modifier Parsing", () => {
     });
 
     test("parses long form symbol names", () => {
-      const pool = parseDiceNotation("+2success +1failure +3advantage +1threat +1triumph +1despair");
+      const pool = parseDiceNotation(
+        "+2success +1failure +3advantage +1threat +1triumph +1despair",
+      );
       expect(pool.automaticSuccesses).toBe(2);
       expect(pool.automaticFailures).toBe(1);
       expect(pool.automaticAdvantages).toBe(3);
@@ -83,7 +85,9 @@ describe("CLI Modifier Parsing", () => {
     });
 
     test("parses long form upgrade/downgrade names", () => {
-      const pool = parseDiceNotation("+2upgradeability +1upgradedifficulty +1downgradeproficiency +2downgradechallenge");
+      const pool = parseDiceNotation(
+        "+2upgradeability +1upgradedifficulty +1downgradeproficiency +2downgradechallenge",
+      );
       expect(pool.upgradeAbility).toBe(2);
       expect(pool.upgradeDifficulty).toBe(1);
       expect(pool.downgradeProficiency).toBe(1);
@@ -111,8 +115,10 @@ describe("CLI Modifier Parsing", () => {
     });
 
     test("parses all dice types with all modifiers", () => {
-      const pool = parseDiceNotation("1y 2g 1b 1r 2p 1s 1w +1s +1f +1a +1t +1tr +1d +1ua +1ud +1dp +1dc");
-      
+      const pool = parseDiceNotation(
+        "1y 2g 1b 1r 2p 1s 1w +1s +1f +1a +1t +1tr +1d +1ua +1ud +1dp +1dc",
+      );
+
       // Check dice
       expect(pool.proficiencyDice).toBe(1);
       expect(pool.abilityDice).toBe(2);
@@ -121,7 +127,7 @@ describe("CLI Modifier Parsing", () => {
       expect(pool.difficultyDice).toBe(2);
       expect(pool.setBackDice).toBe(1);
       expect(pool.forceDice).toBe(1);
-      
+
       // Check automatic symbols
       expect(pool.automaticSuccesses).toBe(1);
       expect(pool.automaticFailures).toBe(1);
@@ -129,7 +135,7 @@ describe("CLI Modifier Parsing", () => {
       expect(pool.automaticThreats).toBe(1);
       expect(pool.automaticTriumphs).toBe(1);
       expect(pool.automaticDespairs).toBe(1);
-      
+
       // Check upgrades/downgrades
       expect(pool.upgradeAbility).toBe(1);
       expect(pool.upgradeDifficulty).toBe(1);
@@ -158,7 +164,7 @@ describe("CLI Modifier Parsing", () => {
     let consoleErrorSpy: jest.SpyInstance;
 
     beforeEach(() => {
-      consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+      consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
     });
 
     afterEach(() => {
@@ -167,12 +173,16 @@ describe("CLI Modifier Parsing", () => {
 
     test("warns on invalid modifier notation", () => {
       parseDiceNotation("+xs");
-      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid modifier notation"));
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Invalid modifier notation"),
+      );
     });
 
     test("warns on invalid modifier type", () => {
       parseDiceNotation("+2xyz");
-      expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid modifier type"));
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Invalid modifier type"),
+      );
     });
 
     test("continues parsing after encountering errors", () => {
