@@ -6,6 +6,18 @@ export type DicePool = {
   difficultyDice?: number;
   challengeDice?: number;
   forceDice?: number;
+  // Automatic symbols added to the result (from talents, attachments, etc.)
+  automaticSuccesses?: number;
+  automaticFailures?: number;
+  automaticAdvantages?: number;
+  automaticThreats?: number;
+  automaticTriumphs?: number;
+  automaticDespairs?: number;
+  // Dice upgrades and downgrades
+  upgradeAbility?: number; // Upgrades ability (green) to proficiency (yellow)
+  upgradeDifficulty?: number; // Upgrades difficulty (purple) to challenge (red)
+  downgradeProficiency?: number; // Downgrades proficiency (yellow) to ability (green)
+  downgradeChallenge?: number; // Downgrades challenge (red) to difficulty (purple)
 };
 
 export type DiceResult = {

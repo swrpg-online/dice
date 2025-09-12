@@ -889,21 +889,34 @@ describe("SWRPG Dice Rolling", () => {
       cleanup2();
     });
 
-    test("advantages and threats accumulate independently", () => {
-      // Mock to generate advantages and threats
-      const cleanup1 = mockMathRandom(4 / 6); // boost die success + advantage
-      const cleanup2 = mockMathRandom(6 / 8); // difficulty die threat
-
+    test("advantages and threats cancel each other out", () => {
+      // Test with automatic symbols to ensure cancellation works correctly
+      const cleanup = mockMathRandom(0.1); // Low rolls for no symbol contribution from dice
+      
       const pool: DicePool = {
-        boostDice: 1,
-        difficultyDice: 1,
+        automaticAdvantages: 3,
+        automaticThreats: 2,
       };
 
       const result = roll(pool);
-      expect(result.summary.advantages).toBeGreaterThan(0);
-      expect(result.summary.threats).toBeGreaterThan(0);
+      // 3 advantages - 2 threats = 1 net advantage
+      expect(result.summary.advantages).toBe(1);
+      expect(result.summary.threats).toBe(0);
 
-      cleanup1();
+      cleanup();
+      
+      // Test opposite case
+      const cleanup2 = mockMathRandom(0.1);
+      const pool2: DicePool = {
+        automaticAdvantages: 2,
+        automaticThreats: 5,
+      };
+      
+      const result2 = roll(pool2);
+      // 2 advantages - 5 threats = 3 net threats
+      expect(result2.summary.advantages).toBe(0);
+      expect(result2.summary.threats).toBe(3);
+      
       cleanup2();
     });
 
