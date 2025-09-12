@@ -502,8 +502,83 @@ const forceDieResult = (roll: number): DiceResult => {
   }
 };
 
+/**
+ * Applies dice upgrades and downgrades to a pool.
+ * Upgrades are applied first, then downgrades.
+ * 
+ * @param pool - The dice pool to modify
+ * @returns A new dice pool with upgrades/downgrades applied
+ */
+const applyDiceModifications = (pool: DicePool): DicePool => {
+  const modifiedPool = { ...pool };
+  
+  // Apply upgrades first (per game rules)
+  if (pool.upgradeAbility && pool.upgradeAbility > 0) {
+    let upgradesToApply = pool.upgradeAbility;
+    const currentAbility = modifiedPool.abilityDice || 0;
+    
+    // Upgrade existing ability dice to proficiency
+    const upgradedDice = Math.min(currentAbility, upgradesToApply);
+    modifiedPool.abilityDice = currentAbility - upgradedDice;
+    modifiedPool.proficiencyDice = (modifiedPool.proficiencyDice || 0) + upgradedDice;
+    upgradesToApply -= upgradedDice;
+    
+    // Add remaining upgrades as new proficiency dice
+    if (upgradesToApply > 0) {
+      modifiedPool.proficiencyDice = (modifiedPool.proficiencyDice || 0) + upgradesToApply;
+    }
+  }
+  
+  if (pool.upgradeDifficulty && pool.upgradeDifficulty > 0) {
+    let upgradesToApply = pool.upgradeDifficulty;
+    const currentDifficulty = modifiedPool.difficultyDice || 0;
+    
+    // Upgrade existing difficulty dice to challenge
+    const upgradedDice = Math.min(currentDifficulty, upgradesToApply);
+    modifiedPool.difficultyDice = currentDifficulty - upgradedDice;
+    modifiedPool.challengeDice = (modifiedPool.challengeDice || 0) + upgradedDice;
+    upgradesToApply -= upgradedDice;
+    
+    // Add remaining upgrades as new challenge dice
+    if (upgradesToApply > 0) {
+      modifiedPool.challengeDice = (modifiedPool.challengeDice || 0) + upgradesToApply;
+    }
+  }
+  
+  // Apply downgrades after upgrades
+  if (pool.downgradeProficiency && pool.downgradeProficiency > 0) {
+    const currentProficiency = modifiedPool.proficiencyDice || 0;
+    const downgradesToApply = Math.min(currentProficiency, pool.downgradeProficiency);
+    
+    // Downgrade proficiency dice to ability dice
+    modifiedPool.proficiencyDice = currentProficiency - downgradesToApply;
+    modifiedPool.abilityDice = (modifiedPool.abilityDice || 0) + downgradesToApply;
+    // Excess downgrades are ignored (per requirements)
+  }
+  
+  if (pool.downgradeChallenge && pool.downgradeChallenge > 0) {
+    const currentChallenge = modifiedPool.challengeDice || 0;
+    const downgradesToApply = Math.min(currentChallenge, pool.downgradeChallenge);
+    
+    // Downgrade challenge dice to difficulty dice
+    modifiedPool.challengeDice = currentChallenge - downgradesToApply;
+    modifiedPool.difficultyDice = (modifiedPool.difficultyDice || 0) + downgradesToApply;
+    // Excess downgrades are ignored (per requirements)
+  }
+  
+  return modifiedPool;
+};
+
 const sumResults = (
   results: DiceResult[],
+  automaticSymbols?: {
+    successes?: number;
+    failures?: number;
+    advantages?: number;
+    threats?: number;
+    triumphs?: number;
+    despairs?: number;
+  },
   options?: RollOptions,
 ): DiceResult => {
   const sums = results.reduce(
@@ -518,12 +593,12 @@ const sumResults = (
       darkSide: acc.darkSide + (curr.darkSide || 0),
     }),
     {
-      successes: 0,
-      failures: 0,
-      advantages: 0,
-      threats: 0,
-      triumphs: 0,
-      despair: 0,
+      successes: automaticSymbols?.successes || 0,
+      failures: automaticSymbols?.failures || 0,
+      advantages: automaticSymbols?.advantages || 0,
+      threats: automaticSymbols?.threats || 0,
+      triumphs: automaticSymbols?.triumphs || 0,
+      despair: automaticSymbols?.despairs || 0,
       lightSide: 0,
       darkSide: 0,
     },
@@ -541,11 +616,24 @@ const sumResults = (
     netFailures = sums.failures - sums.successes;
   }
 
+  // Advantages and threats cancel each other out
+  let netAdvantages = 0;
+  let netThreats = 0;
+
+  if (sums.advantages === sums.threats) {
+    netAdvantages = 0;
+    netThreats = 0;
+  } else if (sums.advantages > sums.threats) {
+    netAdvantages = sums.advantages - sums.threats;
+  } else {
+    netThreats = sums.threats - sums.advantages;
+  }
+
   const result: DiceResult = {
     successes: netSuccesses,
     failures: netFailures,
-    advantages: sums.advantages,
-    threats: sums.threats,
+    advantages: netAdvantages,
+    threats: netThreats,
     triumphs: sums.triumphs,
     despair: sums.despair,
     lightSide: sums.lightSide,
@@ -568,13 +656,16 @@ const sumResults = (
  * - Max total dice: 500 (configurable via options.maxTotalDice)
  */
 export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
-  const boostCount = pool.boostDice ?? 0;
-  const abilityCount = pool.abilityDice ?? 0;
-  const proficiencyCount = pool.proficiencyDice ?? 0;
-  const setBackCount = pool.setBackDice ?? 0;
-  const difficultyCount = pool.difficultyDice ?? 0;
-  const challengeCount = pool.challengeDice ?? 0;
-  const forceCount = pool.forceDice ?? 0;
+  // Apply dice modifications (upgrades/downgrades)
+  const modifiedPool = applyDiceModifications(pool);
+  
+  const boostCount = modifiedPool.boostDice ?? 0;
+  const abilityCount = modifiedPool.abilityDice ?? 0;
+  const proficiencyCount = modifiedPool.proficiencyDice ?? 0;
+  const setBackCount = modifiedPool.setBackDice ?? 0;
+  const difficultyCount = modifiedPool.difficultyDice ?? 0;
+  const challengeCount = modifiedPool.challengeDice ?? 0;
+  const forceCount = modifiedPool.forceDice ?? 0;
 
   // Get limits from options or use defaults
   const maxDicePerType = options?.maxDicePerType ?? DEFAULT_MAX_DICE_PER_TYPE;
@@ -713,7 +804,16 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
     });
   }
 
-  const summary = sumResults(detailedResults.map((r) => r.result));
+  const automaticSymbols = {
+    successes: pool.automaticSuccesses,
+    failures: pool.automaticFailures,
+    advantages: pool.automaticAdvantages,
+    threats: pool.automaticThreats,
+    triumphs: pool.automaticTriumphs,
+    despairs: pool.automaticDespairs,
+  };
+  
+  const summary = sumResults(detailedResults.map((r) => r.result), automaticSymbols, options);
 
   if (options?.hints) {
     const applicableHints = hints.filter((hint) => {
