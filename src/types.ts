@@ -13,6 +13,8 @@ export type DicePool = {
   automaticThreats?: number;
   automaticTriumphs?: number;
   automaticDespairs?: number;
+  automaticLightSide?: number;
+  automaticDarkSide?: number;
   // Dice upgrades and downgrades
   upgradeAbility?: number; // Upgrades ability (green) to proficiency (yellow)
   upgradeDifficulty?: number; // Upgrades difficulty (purple) to challenge (red)

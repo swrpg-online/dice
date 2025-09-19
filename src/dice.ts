@@ -209,6 +209,8 @@ const sumResults = (
     threats?: number;
     triumphs?: number;
     despairs?: number;
+    lightSide?: number;
+    darkSide?: number;
   },
   options?: RollOptions,
 ): DiceResult => {
@@ -230,8 +232,8 @@ const sumResults = (
       threats: automaticSymbols?.threats || 0,
       triumphs: automaticSymbols?.triumphs || 0,
       despair: automaticSymbols?.despairs || 0,
-      lightSide: 0,
-      darkSide: 0,
+      lightSide: automaticSymbols?.lightSide || 0,
+      darkSide: automaticSymbols?.darkSide || 0,
     },
   );
 
@@ -442,6 +444,8 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
     threats: pool.automaticThreats,
     triumphs: pool.automaticTriumphs,
     despairs: pool.automaticDespairs,
+    lightSide: pool.automaticLightSide,
+    darkSide: pool.automaticDarkSide,
   };
 
   const summary = sumResults(

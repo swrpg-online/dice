@@ -98,6 +98,48 @@ describe("Dice Pool Modifiers", () => {
       cleanup();
     });
 
+    test("adds automatic light side points to roll result", () => {
+      const cleanup = mockMathRandom(0.5);
+      const pool: DicePool = {
+        abilityDice: 1,
+        automaticLightSide: 3,
+      };
+
+      const result = roll(pool);
+
+      expect(result.summary.lightSide).toBe(3);
+      cleanup();
+    });
+
+    test("adds automatic dark side points to roll result", () => {
+      const cleanup = mockMathRandom(0.5);
+      const pool: DicePool = {
+        abilityDice: 1,
+        automaticDarkSide: 2,
+      };
+
+      const result = roll(pool);
+
+      expect(result.summary.darkSide).toBe(2);
+      cleanup();
+    });
+
+    test("combines automatic force points with force dice", () => {
+      const cleanup = mockMathRandom(0.1); // Low roll for dark side on force die
+      const pool: DicePool = {
+        forceDice: 1,
+        automaticLightSide: 2,
+        automaticDarkSide: 1,
+      };
+
+      const result = roll(pool);
+
+      // Should have at least the automatic points
+      expect(result.summary.lightSide).toBeGreaterThanOrEqual(2);
+      expect(result.summary.darkSide).toBeGreaterThanOrEqual(1);
+      cleanup();
+    });
+
     test("correctly nets successes and failures with automatic symbols", () => {
       const cleanup = mockMathRandom(0.1); // Low roll for minimal dice contribution
       const pool: DicePool = {
