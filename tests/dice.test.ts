@@ -129,9 +129,9 @@ describe("SWRPG Dice Rolling", () => {
         [
           5,
           {
-            successes: 0,
+            successes: 1,
             failures: 0,
-            advantages: 2,
+            advantages: 1,
             threats: 0,
             triumphs: 0,
             despair: 0,
@@ -1008,25 +1008,12 @@ describe("Force Die (d12)", () => {
         threats: 0,
         triumphs: 0,
         despair: 0,
-        lightSide: 1,
-        darkSide: 0,
+        lightSide: 0,
+        darkSide: 1,
       },
     ],
     [
       6,
-      {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 2,
-        darkSide: 0,
-      },
-    ],
-    [
-      8,
       {
         successes: 0,
         failures: 0,
@@ -1039,7 +1026,7 @@ describe("Force Die (d12)", () => {
       },
     ],
     [
-      12,
+      7,
       {
         successes: 0,
         failures: 0,
@@ -1049,6 +1036,45 @@ describe("Force Die (d12)", () => {
         despair: 0,
         lightSide: 0,
         darkSide: 2,
+      },
+    ],
+    [
+      8,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 1,
+        darkSide: 0,
+      },
+    ],
+    [
+      10,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 2,
+        darkSide: 0,
+      },
+    ],
+    [
+      12,
+      {
+        successes: 0,
+        failures: 0,
+        advantages: 0,
+        threats: 0,
+        triumphs: 0,
+        despair: 0,
+        lightSide: 2,
+        darkSide: 0,
       },
     ],
   ])("face value %i should return correct results", (value, expected) => {

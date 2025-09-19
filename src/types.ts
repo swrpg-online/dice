@@ -13,6 +13,8 @@ export type DicePool = {
   automaticThreats?: number;
   automaticTriumphs?: number;
   automaticDespairs?: number;
+  automaticLightSide?: number;
+  automaticDarkSide?: number;
   // Dice upgrades and downgrades
   upgradeAbility?: number; // Upgrades ability (green) to proficiency (yellow)
   upgradeDifficulty?: number; // Upgrades difficulty (purple) to challenge (red)
@@ -64,6 +66,37 @@ export const SYMBOLS = {
 } as const;
 
 export type Symbol = keyof typeof SYMBOLS;
+
+export type DieFaceSymbols = {
+  successes?: number;
+  failures?: number;
+  advantages?: number;
+  threats?: number;
+  triumphs?: number;
+  despairs?: number;
+  lightSide?: number;
+  darkSide?: number;
+};
+
+export type BoostDieFace = 1 | 2 | 3 | 4 | 5 | 6;
+export type SetbackDieFace = 1 | 2 | 3 | 4 | 5 | 6;
+export type AbilityDieFace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type DifficultyDieFace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+export type ProficiencyDieFace =
+  | 1
+  | 2
+  | 3
+  | 4
+  | 5
+  | 6
+  | 7
+  | 8
+  | 9
+  | 10
+  | 11
+  | 12;
+export type ChallengeDieFace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export type ForceDieFace = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
 export type RollOptions = {
   hints?: boolean;

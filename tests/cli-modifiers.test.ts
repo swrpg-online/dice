@@ -38,6 +38,18 @@ describe("CLI Modifier Parsing", () => {
       expect(pool.automaticDespairs).toBe(1);
     });
 
+    test("parses automatic light side points", () => {
+      const pool = parseDiceNotation("1w +3ls");
+      expect(pool.forceDice).toBe(1);
+      expect(pool.automaticLightSide).toBe(3);
+    });
+
+    test("parses automatic dark side points", () => {
+      const pool = parseDiceNotation("2w +2ds");
+      expect(pool.forceDice).toBe(2);
+      expect(pool.automaticDarkSide).toBe(2);
+    });
+
     test("parses negative automatic symbols", () => {
       const pool = parseDiceNotation("2g -1s +3a -2t");
       expect(pool.abilityDice).toBe(2);
@@ -48,7 +60,7 @@ describe("CLI Modifier Parsing", () => {
 
     test("parses long form symbol names", () => {
       const pool = parseDiceNotation(
-        "+2success +1failure +3advantage +1threat +1triumph +1despair",
+        "+2success +1failure +3advantage +1threat +1triumph +1despair +2lightside +1darkside",
       );
       expect(pool.automaticSuccesses).toBe(2);
       expect(pool.automaticFailures).toBe(1);
@@ -56,6 +68,8 @@ describe("CLI Modifier Parsing", () => {
       expect(pool.automaticThreats).toBe(1);
       expect(pool.automaticTriumphs).toBe(1);
       expect(pool.automaticDespairs).toBe(1);
+      expect(pool.automaticLightSide).toBe(2);
+      expect(pool.automaticDarkSide).toBe(1);
     });
   });
 
@@ -116,7 +130,7 @@ describe("CLI Modifier Parsing", () => {
 
     test("parses all dice types with all modifiers", () => {
       const pool = parseDiceNotation(
-        "1y 2g 1b 1r 2p 1s 1w +1s +1f +1a +1t +1tr +1d +1ua +1ud +1dp +1dc",
+        "1y 2g 1b 1r 2p 1s 1w +1s +1f +1a +1t +1tr +1d +2ls +1ds +1ua +1ud +1dp +1dc",
       );
 
       // Check dice
@@ -135,6 +149,8 @@ describe("CLI Modifier Parsing", () => {
       expect(pool.automaticThreats).toBe(1);
       expect(pool.automaticTriumphs).toBe(1);
       expect(pool.automaticDespairs).toBe(1);
+      expect(pool.automaticLightSide).toBe(2);
+      expect(pool.automaticDarkSide).toBe(1);
 
       // Check upgrades/downgrades
       expect(pool.upgradeAbility).toBe(1);

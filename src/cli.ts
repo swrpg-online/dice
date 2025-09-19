@@ -56,6 +56,10 @@ export function parseDiceNotation(input: string): DicePool {
           "triumph",
           "d",
           "despair",
+          "ls",
+          "lightside",
+          "ds",
+          "darkside",
           "ua",
           "upgradeability",
           "ud",
@@ -95,6 +99,14 @@ export function parseDiceNotation(input: string): DicePool {
             case "d":
             case "despair":
               pool.automaticDespairs = (pool.automaticDespairs || 0) + value;
+              break;
+            case "ls":
+            case "lightside":
+              pool.automaticLightSide = (pool.automaticLightSide || 0) + value;
+              break;
+            case "ds":
+            case "darkside":
+              pool.automaticDarkSide = (pool.automaticDarkSide || 0) + value;
               break;
             // Upgrades and downgrades
             case "ua":
