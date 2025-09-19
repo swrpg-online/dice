@@ -422,7 +422,7 @@ describe("SWRPG Dice Rolling", () => {
         [
           12,
           {
-            successes: 0,
+            successes: 1,
             failures: 0,
             advantages: 0,
             threats: 0,
@@ -791,7 +791,7 @@ describe("SWRPG Dice Rolling", () => {
           12,
           {
             successes: 0,
-            failures: 0,
+            failures: 1,
             advantages: 0,
             threats: 0,
             triumphs: 0,
