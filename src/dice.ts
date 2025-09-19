@@ -6,6 +6,15 @@ import {
   DetailedDieResult,
   RollOptions,
 } from "./types";
+import {
+  BOOST_DIE_FACES,
+  SETBACK_DIE_FACES,
+  ABILITY_DIE_FACES,
+  DIFFICULTY_DIE_FACES,
+  PROFICIENCY_DIE_FACES,
+  CHALLENGE_DIE_FACES,
+  FORCE_DIE_FACES,
+} from "./diceFaces";
 
 // Default dice limits for performance and security
 export const DEFAULT_MAX_DICE_PER_TYPE = 100;
@@ -15,491 +24,101 @@ const rollDie = (sides: number): number =>
   Math.floor(Math.random() * sides) + 1;
 
 const boostDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 3:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 4:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 5:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 2,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 6:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = BOOST_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const setBackDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 3:
-    case 4:
-      return {
-        successes: 0,
-        failures: 1,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 5:
-    case 6:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 1,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = SETBACK_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const abilityDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 2:
-    case 3:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 4:
-      return {
-        successes: 2,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 5:
-    case 6:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 7:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 8:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 2,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = ABILITY_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const difficultyDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 2:
-      return {
-        successes: 0,
-        failures: 1,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 3:
-      return {
-        successes: 0,
-        failures: 2,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 4:
-    case 5:
-    case 6:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 1,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 7:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 2,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 8:
-      return {
-        successes: 0,
-        failures: 1,
-        advantages: 0,
-        threats: 1,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = DIFFICULTY_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const proficiencyDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 2:
-    case 3:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 4:
-    case 5:
-      return {
-        successes: 2,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 6:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 7:
-    case 8:
-    case 9:
-      return {
-        successes: 1,
-        failures: 0,
-        advantages: 1,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 10:
-    case 11:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 2,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 12:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 1,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = PROFICIENCY_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const challengeDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 2:
-    case 3:
-      return {
-        successes: 0,
-        failures: 1,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 4:
-    case 5:
-      return {
-        successes: 0,
-        failures: 2,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 6:
-    case 7:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 1,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 8:
-    case 9:
-      return {
-        successes: 0,
-        failures: 1,
-        advantages: 0,
-        threats: 1,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 10:
-    case 11:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 2,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    case 12:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 1,
-        lightSide: 0,
-        darkSide: 0,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = CHALLENGE_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 const forceDieResult = (roll: number): DiceResult => {
-  switch (roll) {
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 1,
-        darkSide: 0,
-      };
-    case 6:
-    case 7:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 2,
-        darkSide: 0,
-      };
-    case 8:
-    case 9:
-    case 10:
-    case 11:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 1,
-      };
-    case 12:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 2,
-      };
-    default:
-      return {
-        successes: 0,
-        failures: 0,
-        advantages: 0,
-        threats: 0,
-        triumphs: 0,
-        despair: 0,
-        lightSide: 0,
-        darkSide: 0,
-      };
-  }
+  const face = FORCE_DIE_FACES[roll];
+  return {
+    successes: face.successes || 0,
+    failures: face.failures || 0,
+    advantages: face.advantages || 0,
+    threats: face.threats || 0,
+    triumphs: face.triumphs || 0,
+    despair: face.despairs || 0,
+    lightSide: face.lightSide || 0,
+    darkSide: face.darkSide || 0,
+  };
 };
 
 /**
