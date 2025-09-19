@@ -14,10 +14,10 @@ describe("Dice Face Configurations", () => {
     test("should have correct face mappings according to specification", () => {
       expect(BOOST_DIE_FACES[1]).toEqual({}); // Blank
       expect(BOOST_DIE_FACES[2]).toEqual({}); // Blank
-      expect(BOOST_DIE_FACES[3]).toEqual({ advantages: 2 }); // (A)(A)
-      expect(BOOST_DIE_FACES[4]).toEqual({ advantages: 1 }); // (A)
+      expect(BOOST_DIE_FACES[3]).toEqual({ successes: 1 }); // (S)
+      expect(BOOST_DIE_FACES[4]).toEqual({ successes: 1, advantages: 1 }); // (S)(A)
       expect(BOOST_DIE_FACES[5]).toEqual({ successes: 1, advantages: 1 }); // (S)(A)
-      expect(BOOST_DIE_FACES[6]).toEqual({ successes: 1 }); // (S)
+      expect(BOOST_DIE_FACES[6]).toEqual({ advantages: 1 }); // (A)
     });
   });
 

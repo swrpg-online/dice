@@ -3,10 +3,10 @@ import { DieFaceSymbols } from "./types";
 export const BOOST_DIE_FACES: Record<number, DieFaceSymbols> = {
   1: {}, // Blank
   2: {}, // Blank
-  3: { advantages: 2 }, // (A)(A)
-  4: { advantages: 1 }, // (A)
+  3: { successes: 1 }, // (S)
+  4: { successes: 1, advantages: 1 }, // (S)(A)
   5: { successes: 1, advantages: 1 }, // (S)(A)
-  6: { successes: 1 }, // (S)
+  6: { advantages: 1 }, // (A)
 };
 
 export const SETBACK_DIE_FACES: Record<number, DieFaceSymbols> = {
