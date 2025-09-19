@@ -226,8 +226,8 @@ const sumResults = (
       darkSide: acc.darkSide + (curr.darkSide || 0),
     }),
     {
-      successes: automaticSymbols?.successes || 0,
-      failures: automaticSymbols?.failures || 0,
+      successes: (automaticSymbols?.successes || 0) + (automaticSymbols?.triumphs || 0),
+      failures: (automaticSymbols?.failures || 0) + (automaticSymbols?.despairs || 0),
       advantages: automaticSymbols?.advantages || 0,
       threats: automaticSymbols?.threats || 0,
       triumphs: automaticSymbols?.triumphs || 0,

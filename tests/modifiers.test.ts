@@ -98,6 +98,64 @@ describe("Dice Pool Modifiers", () => {
       cleanup();
     });
 
+    test("automatic triumphs include implicit successes", () => {
+      const cleanup = mockMathRandom(0.1); // Low roll for minimal dice contribution
+      const pool: DicePool = {
+        automaticTriumphs: 2,
+      };
+
+      const result = roll(pool);
+
+      // Should have 2 triumphs and at least 2 successes (implicit)
+      expect(result.summary.triumphs).toBe(2);
+      expect(result.summary.successes).toBeGreaterThanOrEqual(2);
+      cleanup();
+    });
+
+    test("automatic despairs include implicit failures", () => {
+      const cleanup = mockMathRandom(0.1); // Low roll for minimal dice contribution
+      const pool: DicePool = {
+        automaticDespairs: 3,
+      };
+
+      const result = roll(pool);
+
+      // Should have 3 despairs and at least 3 failures (implicit)
+      expect(result.summary.despair).toBe(3);
+      expect(result.summary.failures).toBeGreaterThanOrEqual(3);
+      cleanup();
+    });
+
+    test("automatic triumphs add to existing successes", () => {
+      const cleanup = mockMathRandom(0.1);
+      const pool: DicePool = {
+        automaticSuccesses: 3,
+        automaticTriumphs: 2,
+      };
+
+      const result = roll(pool);
+
+      // Should have 2 triumphs and 5 total successes (3 explicit + 2 implicit from triumphs)
+      expect(result.summary.triumphs).toBe(2);
+      expect(result.summary.successes).toBe(5);
+      cleanup();
+    });
+
+    test("automatic despairs add to existing failures", () => {
+      const cleanup = mockMathRandom(0.1);
+      const pool: DicePool = {
+        automaticFailures: 2,
+        automaticDespairs: 1,
+      };
+
+      const result = roll(pool);
+
+      // Should have 1 despair and 3 total failures (2 explicit + 1 implicit from despair)
+      expect(result.summary.despair).toBe(1);
+      expect(result.summary.failures).toBe(3);
+      cleanup();
+    });
+
     test("adds automatic light side points to roll result", () => {
       const cleanup = mockMathRandom(0.5);
       const pool: DicePool = {
