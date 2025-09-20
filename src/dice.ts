@@ -216,8 +216,8 @@ const sumResults = (
 ): DiceResult => {
   const sums = results.reduce(
     (acc, curr) => ({
-      successes: acc.successes + curr.successes,
-      failures: acc.failures + curr.failures,
+      successes: acc.successes + curr.successes + curr.triumphs,
+      failures: acc.failures + curr.failures + curr.despair,
       advantages: acc.advantages + curr.advantages,
       threats: acc.threats + curr.threats,
       triumphs: acc.triumphs + curr.triumphs,

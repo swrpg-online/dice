@@ -52,7 +52,7 @@ export const PROFICIENCY_DIE_FACES: Record<number, DieFaceSymbols> = {
   9: { successes: 1, advantages: 1 }, // (S)(A)
   10: { advantages: 2 }, // (A)(A)
   11: { advantages: 2 }, // (A)(A)
-  12: { triumphs: 1, successes: 1 }, // (TR) - Triumph also counts as Success
+  12: { triumphs: 1 }, // (TR) - Triumph also counts as Success
 };
 
 export const CHALLENGE_DIE_FACES: Record<number, DieFaceSymbols> = {
@@ -67,7 +67,7 @@ export const CHALLENGE_DIE_FACES: Record<number, DieFaceSymbols> = {
   9: { failures: 1, threats: 1 }, // (F)(TH)
   10: { threats: 2 }, // (TH)(TH)
   11: { threats: 2 }, // (TH)(TH)
-  12: { despairs: 1, failures: 1 }, // (D) - Despair also counts as Failure
+  12: { despairs: 1 }, // (D) - Despair also counts as Failure
 };
 
 export const FORCE_DIE_FACES: Record<number, DieFaceSymbols> = {
