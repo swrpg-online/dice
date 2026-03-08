@@ -5,6 +5,7 @@ import {
   DiceResult,
   DetailedDieResult,
   RollOptions,
+  SYMBOLS,
 } from "./types";
 import {
   BOOST_DIE_FACES,
@@ -15,6 +16,18 @@ import {
   CHALLENGE_DIE_FACES,
   FORCE_DIE_FACES,
 } from "./diceFaces";
+
+/** Maps SYMBOLS enum values to their corresponding DiceResult property keys */
+const SYMBOL_TO_RESULT_KEY: Record<string, keyof DiceResult> = {
+  [SYMBOLS.SUCCESS]: "successes",
+  [SYMBOLS.FAILURE]: "failures",
+  [SYMBOLS.ADVANTAGE]: "advantages",
+  [SYMBOLS.THREAT]: "threats",
+  [SYMBOLS.TRIUMPH]: "triumphs",
+  [SYMBOLS.DESPAIR]: "despair",
+  [SYMBOLS.LIGHT]: "lightSide",
+  [SYMBOLS.DARK]: "darkSide",
+};
 
 // Default dice limits for performance and security
 export const DEFAULT_MAX_DICE_PER_TYPE = 100;
@@ -462,7 +475,8 @@ export const roll = (pool: DicePool, options?: RollOptions): RollResult => {
       // For OR conditions: at least one option must be fully satisfied
       // Each entry in cost represents an alternative way to pay for the hint
       return Object.entries(cost).some(([symbol, required]) => {
-        const summaryKey = (symbol.toLowerCase() + "s") as keyof typeof summary;
+        const summaryKey = SYMBOL_TO_RESULT_KEY[symbol];
+        if (!summaryKey) return false;
         const value = summary[summaryKey];
         if (typeof value !== "number") return false;
         // Check if we have enough of this symbol type to afford the hint

@@ -1535,6 +1535,30 @@ describe("Input Validation and Bounds Checking", () => {
       cleanup();
     });
 
+    test("shows despair-based hints when despair is rolled", () => {
+      // Force challenge die to roll face 12 (despair)
+      const cleanup = mockMathRandom(11 / 12);
+      const pool: DicePool = {
+        challengeDice: 1,
+      };
+      const options: RollOptions = { hints: true };
+
+      const result = roll(pool, options);
+
+      expect(result.summary.despair).toBeGreaterThanOrEqual(1);
+      expect(result.summary.hints).toBeDefined();
+      expect(result.summary.hints!.length).toBeGreaterThan(0);
+
+      // At least one hint should be costed with Despair
+      const despairHints = result.summary.hints!.filter((h) => {
+        const costPart = h.split(" - ")[0];
+        return costPart.includes("Despair");
+      });
+      expect(despairHints.length).toBeGreaterThan(0);
+
+      cleanup();
+    });
+
     test("correctly displays hint costs with proper OR formatting", () => {
       const cleanup = mockMathRandom(0.8);
       const pool: DicePool = {
