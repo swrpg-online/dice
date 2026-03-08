@@ -70,7 +70,10 @@ describe("Dice Face Configurations", () => {
       expect(PROFICIENCY_DIE_FACES[8]).toEqual({ successes: 1, advantages: 1 }); // (S)(A)
       expect(PROFICIENCY_DIE_FACES[9]).toEqual({ successes: 1, advantages: 1 }); // (S)(A)
       expect(PROFICIENCY_DIE_FACES[10]).toEqual({ advantages: 2 }); // (A)(A)
-      expect(PROFICIENCY_DIE_FACES[11]).toEqual({ successes: 1, advantages: 1 }); // (S)(A)
+      expect(PROFICIENCY_DIE_FACES[11]).toEqual({
+        successes: 1,
+        advantages: 1,
+      }); // (S)(A)
       expect(PROFICIENCY_DIE_FACES[12]).toEqual({ triumphs: 1 }); // (TR) - Triumph also counts as Success
     });
   });
