@@ -51,7 +51,7 @@ export const PROFICIENCY_DIE_FACES: Record<number, DieFaceSymbols> = {
   8: { successes: 1, advantages: 1 }, // (S)(A)
   9: { successes: 1, advantages: 1 }, // (S)(A)
   10: { advantages: 2 }, // (A)(A)
-  11: { successes: 1, advantages: 1 }, // (S)(A)
+  11: { advantages: 2 }, // (A)(A)
   12: { triumphs: 1 }, // (TR) - Triumph also counts as Success
 };
 
